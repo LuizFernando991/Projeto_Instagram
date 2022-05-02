@@ -3,28 +3,33 @@ import { Schema, Document } from 'mongoose'
 
 export interface UserInterface extends Document {
     name: string
+    username: string
     email: string
     password: string
     imageProfile?: string
 }
 
 const UserSchema = new Schema({
-    name : {
+    name: {
         type: String,
         required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
     },
     email : {
         type: String,
         required: true,
         unique: true,
     },
-    password : {
+    password: {
         type: String,
         required: true
     },
-    imageProfile : {
+    imageProfile: {
         type: String,
-        required: true,
         default: ''
     }
 })
