@@ -1,7 +1,8 @@
 import mongoose from '../db/conn'
-import { Schema, Document } from 'mongoose'
+import { Schema, Document, ObjectId } from 'mongoose'
 
 export interface UserInterface extends Document {
+    _id: ObjectId
     name: string
     username: string
     email: string
@@ -32,6 +33,6 @@ const UserSchema = new Schema({
         type: String,
         default: ''
     }
-})
+}, {timestamps : true})
 
 export default mongoose.model<UserInterface>('User', UserSchema)
