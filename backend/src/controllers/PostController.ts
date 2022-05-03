@@ -73,6 +73,45 @@ export default class PostController {
         return res.status(200).json({ post })
     }
 
+    public static async getFollowingPosts(req: Request, res:Response)  { 
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        //pagination
+        const NumPage = req.query['page']
+        const limitPerpage = 10
+        let page : number , offset : number, next : boolean
+        if(!NumPage || NumPage === '1') {
+            page = 1
+            offset = 0
+        }else {
+            if(typeof(NumPage) === 'string'){
+                page = parseInt(NumPage)
+                offset = (page - 1)*limitPerpage
+            }else{
+                page = 1
+                offset = 0
+            }
+        }
+        const numberOfFollowingPosts = await Post.find({ postedBy : {$in: user.following}}).count()
+        if(offset + limitPerpage < numberOfFollowingPosts){
+            next = true
+        }else{
+            next = false
+        }
+        console.log(offset)
+        //return posts
+        const followingPosts = await Post.find({ postedBy : {$in: user.following}}, null, { limit : limitPerpage, skip : offset}).sort('-createdAt')
+
+        return res.status(200).json({followingPosts, nextPage : next})
+    }
+
     public static async like(req: Request, res:Response) : Promise<Response> {
         const { postId } : {postId : string} = req.body
         if(!postId){
@@ -132,7 +171,7 @@ export default class PostController {
         }
     }
 
-    public static async comment(req: Request, res:Response) {
+    public static async comment(req: Request, res:Response) : Promise<Response> {
         const { text, postId } : { text : string, postId : string } = req.body
         //get user
         const token = getToken(req)

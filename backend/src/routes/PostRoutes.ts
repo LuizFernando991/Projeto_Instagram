@@ -9,6 +9,7 @@ const router = express.Router()
 
 router.post('/create', verifyTokenMiddleware, imageUpload.array('images'), PostController.createPost)
 router.get('/alluserposts', PostController.getAllPostsUser)
+router.get('/followingposts', verifyTokenMiddleware, PostController.getFollowingPosts)
 router.get('/:id', PostController.getPost)
 router.put('/like', verifyTokenMiddleware, PostController.like)
 router.put('/unlike', verifyTokenMiddleware, PostController.unlike)

@@ -8,6 +8,7 @@ export interface PostCommentsInface {
 }
 
 export interface PostInterface extends Document {
+    _id: ObjectId
     description: string
     images: Array<string>
     postedBy: ObjectId
