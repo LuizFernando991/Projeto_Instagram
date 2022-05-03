@@ -43,6 +43,9 @@ export default class PostController {
     public static async getAllPostsUser(req: Request, res:Response) : Promise<Response> {
 
         const { userId }: {userId: string} = req.body
+        if(!userId){
+            return res.status(422).json({message : 'user id is required'})
+        }
         
         try{
             const allPosts = await Post.find({postedBy : userId }).populate("postedBy", ["name", "username", "imageProfile"])
@@ -58,6 +61,9 @@ export default class PostController {
 
     public static async getPost(req: Request, res:Response) : Promise<Response> {
         const postId = req.params.id
+        if(!postId){
+            return res.status(422).json({message : 'post id is required'})
+        }
         const post = await Post.findById(postId).populate("postedBy", ["name", "username", "imageProfile"])
             .populate("postLikes", ["name", "username", "imageProfile"])
             .populate("postComments.postedBy", ["name", "username", "imageProfile"]) // postcomments
