@@ -6,9 +6,8 @@ import getToken from '../helpers/get-token'
 
 export default class UserController { 
 
-    public static async registerUser(req: Request, res: Response) : Promise<Response>{
-        const { name, username, email, password } : {name: string, username: string, email: string, password: string }= req.body
-        
+    public static async registerUser(req: Request, res: Response) : Promise<Response> {
+        const { name, username, email, password } : {name: string, username: string, email: string, password: string }= req.body    
         //Validate if user already exists
         const userEmailExists = await User.findOne({email : email})
         if(userEmailExists){
@@ -41,9 +40,8 @@ export default class UserController {
         }
     }
 
-    public static async singUp(req: Request, res: Response) : Promise<Response>{
+    public static async singUp(req: Request, res: Response) : Promise<Response> {
         const { email, password } : {email: string, password: string} = req.body
-
         //Check if user exists
         const user = await User.findOne({ email : email })
         if(!user){
@@ -56,4 +54,17 @@ export default class UserController {
         }
         return createToken(user, req, res)
     }
+
+    public static async getUserByUsername(req: Request, res: Response) : Promise<Response> {
+        const username : string = req.params.username
+        const user = await User.findOne({ username : username }).select('-password -email')
+            .populate("followers", ["username", "name", "imageProfile"])
+            .populate("following", ["username", "name", "imageProfile"])
+
+        if(!user){
+            return res.status(404).json({ message : 'user not found'})
+        }
+        return res.status(200).json({ user })
+    }
+
 }

@@ -46,6 +46,8 @@ export default class PostController {
         
         try{
             const allPosts = await Post.find({postedBy : userId }).populate("postedBy", ["name", "username", "imageProfile"])
+                .populate("postLikes", ["name", "username", "imageProfile"])
+                .populate("postComments.postedBy", ["name", "username", "imageProfile"]) //postcomments
             return res.status(200).json({allPosts})
         }catch(err) {
             console.log(err)
@@ -57,6 +59,8 @@ export default class PostController {
     public static async getPost(req: Request, res:Response) : Promise<Response> {
         const postId = req.params.id
         const post = await Post.findById(postId).populate("postedBy", ["name", "username", "imageProfile"])
+            .populate("postLikes", ["name", "username", "imageProfile"])
+            .populate("postComments.postedBy", ["name", "username", "imageProfile"]) // postcomments
         if(!post){
             return res.status(404).json({ message : 'post not found' })
         }
@@ -83,7 +87,9 @@ export default class PostController {
                 $addToSet: {postLikes: user._id} //addToSet verify if user already liked the post
             },{
                 new:true
-            })
+            }).populate("postedBy", ["name", "username", "imageProfile"])
+                .populate("postLikes", ["name", "username", "imageProfile"])
+                .populate("postComments.postedBy", ["name", "username", "imageProfile"])
             return res.status(200).json({ newPost })
         }catch(err) {
             return res.status(500).json({message : 'internal error'})
@@ -110,12 +116,44 @@ export default class PostController {
                 $pull: {postLikes: user._id} 
             },{
                 new:true
-            })
+            }).populate("postedBy", ["name", "username", "imageProfile"])
+                .populate("postLikes", ["name", "username", "imageProfile"])
+                .populate("postComments.postedBy", ["name", "username", "imageProfile"])
             return res.status(200).json({ newPost })
         }catch(err) {
             console.log(err)
             return res.status(500).json({message : 'internal error'})
         }
+    }
+
+    public static async comment(req: Request, res:Response) {
+        const { text, postId } : { text : string, postId : string } = req.body
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const comment = {
+            text : text,
+            postedBy : user._id
+        }
+        try{  
+            const newPost = await Post.findByIdAndUpdate(postId, {
+                $push: {postComments: comment}
+            },{
+                new:true
+            }).populate("postedBy", ["name", "username", "imageProfile"])
+                .populate("postLikes", ["name", "username", "imageProfile"])
+                .populate("postComments.postedBy", ["name", "username", "imageProfile"])
+            return res.status(200).json({ newPost })
+        }catch(err) {
+            return res.status(500).json({message : 'internal error'})
+        }
+        
     }
 
     public static async deletePost(req: Request, res:Response) : Promise<Response> {
