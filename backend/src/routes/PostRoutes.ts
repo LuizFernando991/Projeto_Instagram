@@ -7,7 +7,11 @@ import verifyTokenMiddleware from '../middlewares/verifyTokenMiddleware'
 const router = express.Router()
 
 router.post('/create', verifyTokenMiddleware, imageUpload.array('images'), PostController.createPost)
-router.get('/alluserposts', PostController.allPostsUser)
+router.get('/alluserposts', PostController.getAllPostsUser)
+router.get('/:id', PostController.getPost)
+router.put('/like', verifyTokenMiddleware, PostController.like)
+router.put('/unlike', verifyTokenMiddleware, PostController.unlike)
+router.delete('/delete', verifyTokenMiddleware, PostController.deletePost)
 
 
 export default router

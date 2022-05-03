@@ -40,18 +40,114 @@ export default class PostController {
 
     }
 
-    public static async allPostsUser(req: Request, res:Response) : Promise<Response> {
+    public static async getAllPostsUser(req: Request, res:Response) : Promise<Response> {
 
         const { userId }: {userId: string} = req.body
         
         try{
-            const allPosts = await Post.find({postedBy : userId })
+            const allPosts = await Post.find({postedBy : userId }).populate("postedBy", ["name", "username", "imageProfile"])
             return res.status(200).json({allPosts})
         }catch(err) {
             console.log(err)
             return res.status(500).json({message : 'internal error'})
         }
 
+    }
+
+    public static async getPost(req: Request, res:Response) : Promise<Response> {
+        const postId = req.params.id
+        const post = await Post.findById(postId).populate("postedBy", ["name", "username", "imageProfile"])
+        if(!post){
+            return res.status(404).json({ message : 'post not found' })
+        }
+        return res.status(200).json({ post })
+    }
+
+    public static async like(req: Request, res:Response) : Promise<Response> {
+        const { postId } : {postId : string} = req.body
+        if(!postId){
+            return res.status(422).json({ message : 'postId is required' })
+        }
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        try{
+            
+            const newPost = await Post.findByIdAndUpdate(postId, {
+                $addToSet: {postLikes: user._id} //addToSet verify if user already liked the post
+            },{
+                new:true
+            })
+            return res.status(200).json({ newPost })
+        }catch(err) {
+            return res.status(500).json({message : 'internal error'})
+        }
+    }
+
+    public static async unlike(req: Request, res:Response) : Promise<Response> {
+        const { postId } : {postId : string} = req.body
+        if(!postId){
+            return res.status(422).json({ message : 'postId is required' })
+        }
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        try{
+            
+            const newPost = await Post.findByIdAndUpdate(postId, {
+                $pull: {postLikes: user._id} 
+            },{
+                new:true
+            })
+            return res.status(200).json({ newPost })
+        }catch(err) {
+            console.log(err)
+            return res.status(500).json({message : 'internal error'})
+        }
+    }
+
+    public static async deletePost(req: Request, res:Response) : Promise<Response> {
+        const { postId } : {postId : string} = req.body
+        if(!postId){
+            return res.status(422).json({ message : 'postId is required' })
+        }
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        //get post
+        const post = await Post.findOne({ _id : postId })
+        if(!post){
+            return res.status(404).json({ message : 'post not found' })
+        }
+        //check if user is owner of post
+        if(user._id.toString() !== post.postedBy.toString()){
+            return res.status(401).json({ message : 'unauthorized' })
+        }
+        try{
+            post.remove()
+            //delete post images
+            return res.status(200).json({ message : 'post deleted'})
+        }catch(err) {
+            return res.status(500).json({ message : 'internal error'})
+        }
     }
 
 }
