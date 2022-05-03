@@ -8,6 +8,8 @@ export interface UserInterface extends Document {
     email: string
     password: string
     imageProfile?: string
+    followers: Array<ObjectId>
+    following: Array<ObjectId>
 }
 
 const UserSchema = new Schema({
@@ -20,7 +22,7 @@ const UserSchema = new Schema({
         required: true,
         unique: true,
     },
-    email : {
+    email: {
         type: String,
         required: true,
         unique: true,
@@ -32,7 +34,16 @@ const UserSchema = new Schema({
     imageProfile: {
         type: String,
         default: ''
-    }
+    },
+    followers: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    following: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    
 }, {timestamps : true})
 
 export default mongoose.model<UserInterface>('User', UserSchema)

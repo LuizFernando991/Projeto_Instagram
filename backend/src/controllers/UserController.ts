@@ -7,7 +7,7 @@ import getToken from '../helpers/get-token'
 export default class UserController { 
 
     public static async registerUser(req: Request, res: Response) : Promise<Response>{
-        const { name, username, email, password } = req.body
+        const { name, username, email, password } : {name: string, username: string, email: string, password: string }= req.body
         
         //Validate if user already exists
         const userEmailExists = await User.findOne({email : email})
@@ -28,6 +28,8 @@ export default class UserController {
             email: email.trim(),
             password: passwordHash,
             imageProfile: '',
+            following: [],
+            followers: [],
         })
         try {
             await user.save()
@@ -40,7 +42,7 @@ export default class UserController {
     }
 
     public static async singUp(req: Request, res: Response) : Promise<Response>{
-        const { email, password } = req.body
+        const { email, password } : {email: string, password: string} = req.body
 
         //Check if user exists
         const user = await User.findOne({ email : email })

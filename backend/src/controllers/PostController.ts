@@ -7,7 +7,7 @@ export default class PostController {
 
     public static async createPost(req: Request, res: Response) : Promise<Response> {
         
-        const { title } = req.body
+        const { description }: { description : string } = req.body
         const images : any = req.files
 
         if(!images || images.length ===0){
@@ -21,7 +21,7 @@ export default class PostController {
         const user = await getUserByToken(token, res)
         //Images strings on array
         const post = new Post({
-            title,
+            description,
             images: [],
             postedBy: user?._id,
             postLikes: [],
@@ -36,6 +36,20 @@ export default class PostController {
             return res.status(200).json({ message : "post successfully added", post : newPost})
         }catch(err){
             return res.status(500).json({ message : 'internal error'})
+        }
+
+    }
+
+    public static async allPostsUser(req: Request, res:Response) : Promise<Response> {
+
+        const { userId }: {userId: string} = req.body
+        
+        try{
+            const allPosts = await Post.find({postedBy : userId })
+            return res.status(200).json({allPosts})
+        }catch(err) {
+            console.log(err)
+            return res.status(500).json({message : 'internal error'})
         }
 
     }

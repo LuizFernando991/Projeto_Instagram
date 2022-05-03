@@ -7,6 +7,7 @@ import verifyTokenMiddleware from '../middlewares/verifyTokenMiddleware'
 const router = express.Router()
 
 router.post('/create', verifyTokenMiddleware, imageUpload.array('images'), PostController.createPost)
+router.get('/alluserposts', PostController.allPostsUser)
 
 
 export default router

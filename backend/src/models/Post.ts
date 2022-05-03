@@ -8,7 +8,7 @@ export interface PostCommentsInface {
 }
 
 export interface PostInterface extends Document {
-    title: string
+    description: string
     images: Array<string>
     postedBy: ObjectId
     postLikes: Array<ObjectId>
@@ -17,7 +17,7 @@ export interface PostInterface extends Document {
 }
 
 const PostSchema = new Schema({
-    title: {
+    description: {
         type: String,
     },
     images: [{
