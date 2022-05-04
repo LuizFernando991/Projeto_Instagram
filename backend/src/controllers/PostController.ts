@@ -288,5 +288,5 @@ export default class PostController {
             return res.status(500).json({ message : 'internal error'})
         }
     }
-
+    //teste branch
 }
