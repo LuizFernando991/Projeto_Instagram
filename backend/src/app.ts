@@ -3,6 +3,7 @@ import cors from 'cors'
 //Routes
 import UserRoutes from './routes/UserRoutes'
 import PostRoutes from './routes/PostRoutes'
+import StorieRoutes from './routes/StorieRoutes'
 
 
 const app : Application = express()
@@ -19,6 +20,7 @@ app.use(express.static(__dirname + '/public'))
 //Routes
 app.use('/user', UserRoutes)
 app.use('/post', PostRoutes)
+app.use('/storie', StorieRoutes)
 //Init server
 app.listen(5050, ()=>{
     console.log('server on')
