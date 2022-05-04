@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import getUserByToken from '../helpers/get-user-by-token'
 import getToken from '../helpers/get-token'
 import Post from '../models/Post'
+import User from '../models/User'
 
 export default class PostController {
 
@@ -134,6 +135,18 @@ export default class PostController {
             }).populate("postedBy", ["name", "username", "imageProfile"])
                 .populate("postLikes", ["name", "username", "imageProfile"])
                 .populate("postComments.postedBy", ["name", "username", "imageProfile"])
+            //sending notificate
+
+            if(newPost){
+                const postedUser = newPost.postedBy
+                const notificate = {
+                    notificationType: 'like',
+                    notificationBy: user._id
+                }
+                await User.findByIdAndUpdate(postedUser, {
+                    $push: {notifications: notificate}
+                }, { new : true})
+            }
             return res.status(200).json({ newPost })
         }catch(err) {
             return res.status(500).json({message : 'internal error'})
@@ -190,14 +203,58 @@ export default class PostController {
                 $push: {postComments: comment}
             },{
                 new:true
-            }).populate("postedBy", ["name", "username", "imageProfile"])
+            }).populate("postedBy", ["_id", "name", "username", "imageProfile"])
+                .populate("postLikes", ["name", "username", "imageProfile"])
+                .populate("postComments.postedBy", ["name", "username", "imageProfile"])
+
+            //sending notificate
+
+            if(newPost){
+                const postedUser = newPost.postedBy
+                const notificate = {
+                    notificationType: 'comment',
+                    notificationBy: user._id
+                }
+                await User.findByIdAndUpdate(postedUser, {
+                    $push: {notifications: notificate}
+                }, { new : true})
+            }
+            return res.status(200).json({ newPost })
+        }catch(err) {
+            return res.status(500).json({message : 'internal error'})
+        }
+        
+    }
+
+    public static async deleteComment(req: Request, res:Response)  {
+        const { commentId } : { commentId : string} = req.body
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        //get post 
+        const post = await Post.findOne({ postComments : {$elemMatch: {_id : commentId}} })
+        if(!post){
+            return res.status(404).json({ message : 'comment id not found' })
+        }
+        if(user._id.toString() !== post.postedBy.toString()){
+            return res.status(401).json({ message : 'unauthorized'})
+        }
+        try{
+            const newPost = await Post.findByIdAndUpdate(post._id, {
+                $pull: {postComments : {_id : commentId}} 
+            }, { new : true}).populate("postedBy", ["name", "username", "imageProfile"])
                 .populate("postLikes", ["name", "username", "imageProfile"])
                 .populate("postComments.postedBy", ["name", "username", "imageProfile"])
             return res.status(200).json({ newPost })
         }catch(err) {
             return res.status(500).json({message : 'internal error'})
         }
-        
     }
 
     public static async deletePost(req: Request, res:Response) : Promise<Response> {

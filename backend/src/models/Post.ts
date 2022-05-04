@@ -3,6 +3,7 @@ import { Schema, Document, ObjectId } from 'mongoose'
 import User from './User'
 
 export interface PostCommentsInface {
+    _id: ObjectId
     text: string
     postedBy: ObjectId
 }

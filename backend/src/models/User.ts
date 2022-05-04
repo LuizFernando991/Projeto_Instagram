@@ -10,6 +10,7 @@ export interface UserInterface extends Document {
     imageProfile?: string
     followers: Array<ObjectId>
     following: Array<ObjectId>
+    notifications: Array<ObjectId>
 }
 
 const UserSchema = new Schema({
@@ -43,6 +44,13 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }],
+    notifications : [{
+        notificationType : String,
+        notificationBy: {
+            type : Schema.Types.ObjectId,
+            ref: "User"
+        }
+    }]
     
 }, {timestamps : true})
 

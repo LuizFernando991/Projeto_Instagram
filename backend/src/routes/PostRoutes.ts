@@ -14,6 +14,7 @@ router.get('/:id', PostController.getPost)
 router.put('/like', verifyTokenMiddleware, PostController.like)
 router.put('/unlike', verifyTokenMiddleware, PostController.unlike)
 router.put('/comment', verifyTokenMiddleware, commentMiddleware, PostController.comment)
+router.put('/deletecomment', verifyTokenMiddleware, PostController.deleteComment)
 router.delete('/delete', verifyTokenMiddleware, PostController.deletePost)
 
 

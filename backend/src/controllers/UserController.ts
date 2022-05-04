@@ -30,6 +30,7 @@ export default class UserController {
             imageProfile: '',
             following: [],
             followers: [],
+            notifications: [],
         })
         try {
             await user.save()
@@ -180,24 +181,26 @@ export default class UserController {
         }
         try{
             //updating followed user
+            const notificate = {
+                notificationType: 'follow',
+                notificationBy: user._id
+            }
             const followedUser = await User.findByIdAndUpdate(userId, {
-                $addToSet: {followers: user._id} 
+                $addToSet: {followers: user._id},
+                $push: {notifications : notificate } 
             },{
                 new:true
-            }).select('-password -email')
+            }).select('-password -email -notifications')
                 .populate("followers", ["username", "name", "imageProfile"])
                 .populate("following", ["username", "name", "imageProfile"])
             if(!followedUser){
                 return res.status(422).json({ message : 'user followed not found' })
             }
             //updating follower user
+            
             const followerUser = await User.findByIdAndUpdate(user._id, {
-                $addToSet: {following: userId} 
-            },{
-                new:true
-            }).select('-password -email')
-                .populate("followers", ["username", "name", "imageProfile"])
-                .populate("following", ["username", "name", "imageProfile"])
+                $addToSet: {following: userId}
+            })
             return res.status(200).json({ followedUser })
         }catch(err) {
             return res.status(500).json({message : 'internal error'})
@@ -253,6 +256,27 @@ export default class UserController {
         const users = await User.find({username : {$regex:userPattern}}, null, { limit: 8})
         return res.status(200).json({ users })
 
+    }
+
+    public static async clearNotifications(req: Request, res: Response) : Promise<Response> {
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res, true)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+
+        try{
+            await User.findByIdAndUpdate(user._id, {
+                notifications : [],
+            })
+            return res.status(200).json({ message : 'notificates cleared'})
+        }catch(err) {
+            return res.status(500).json({ message : 'internal error' })
+        }
     }
 
 }
