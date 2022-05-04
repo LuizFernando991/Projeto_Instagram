@@ -105,7 +105,6 @@ export default class PostController {
         }else{
             next = false
         }
-        console.log(offset)
         //return posts
         const followingPosts = await Post.find({ postedBy : {$in: user.following}}, null, { limit : limitPerpage, skip : offset}).sort('-createdAt')
 

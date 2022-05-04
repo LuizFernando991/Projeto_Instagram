@@ -68,6 +68,99 @@ export default class UserController {
         return res.status(200).json({ user })
     }
 
+    public static async imageProfileUpdate(req: Request, res: Response) : Promise<Response> {
+        const image : any = req.file
+        if(!image){
+            return res.status(422).json({ message : 'image is required' })
+        }
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        try{
+            const newUser = await User.findOneAndUpdate({_id : user._id}, { imageProfile : image.filename}, { new : true}).select('-password -email')
+                .populate("followers", ["username", "name", "imageProfile"])
+                .populate("following", ["username", "name", "imageProfile"])
+            return res.status(200).json({ newUser })
+        }catch(err) {
+            console.log(err)
+            return res.status(500).json({message : 'internal error'})
+        }
+
+    }
+
+    public static async changePassword(req: Request, res: Response) : Promise<Response> {
+        const { password, confirmPassword, lastPassword } : { password : string, confirmPassword : string, lastPassword : string }= req.body
+        if(!password){
+            return res.status(422).json({ message : 'password is required'})
+        }
+        if(!lastPassword){
+            return res.status(422).json({ message : 'last password is required'})
+        }
+        if(password !== confirmPassword){
+            return res.status(422).json({ message : 'password must match with confirm password'})
+        }
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res, true)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        // Check old password
+        const checkPassword = bcrypt.compare(lastPassword, user.password)
+        if(!checkPassword){
+            return res.status(422).json({ message : 'wrong last password'})
+        }
+        // Encrypting password before save in db    
+        const salt = await bcrypt.genSalt(12)
+        const passwordHash = await bcrypt.hash(password.trim(), salt)
+
+        try {
+            await User.findOneAndUpdate({_id : user.id}, { password : passwordHash})
+            return res.status(200).json({ message : 'password changed' })
+        }catch(err) {
+            return res.status(500).json({ message : 'internal error' })
+        }
+    }
+
+    public static async editUser(req: Request, res: Response) : Promise<Response> {
+        const { name, username, email } : { name : string, username : string, email : string } = req.body
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        //Validate if user already exists
+        const userEmailExists = await User.findOne({email : email})
+        if(userEmailExists && user.email !== email){
+            return res.status(422).json({message : 'email already used'})
+        }
+        const userUserNameExists = await User.findOne({username : username})
+        if(userUserNameExists && user.username !== username){
+            return res.status(422).json({message : 'username already used'})
+        }
+        try{
+            const newUser = await User.findOneAndUpdate({ _id : user.id}, {name, username, email}, {new : true}).select('-password -email')
+                .populate("followers", ["username", "name", "imageProfile"])
+                .populate("following", ["username", "name", "imageProfile"])
+            return res.status(200).json({ newUser })
+        }catch(err) {
+            return res.status(500).json({ message: 'internal error' })
+        }
+    }
+
     public static async follow(req: Request, res: Response) : Promise<Response> {
         const { userId } : { userId : string } = req.body
         if(!userId ){
@@ -152,6 +245,14 @@ export default class UserController {
         }catch(err) {
             return res.status(500).json({message : 'internal error'})
         }
+    }
+
+    public static async searchUser(req: Request, res: Response) : Promise<Response> {
+        const { query } : { query : string } = req.body
+        let userPattern = new RegExp("^"+query)
+        const users = await User.find({username : {$regex:userPattern}}, null, { limit: 8})
+        return res.status(200).json({ users })
+
     }
 
 }
