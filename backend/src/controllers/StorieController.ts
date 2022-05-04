@@ -43,10 +43,11 @@ export default class StorieController {
 
     public static async getUserStories(req: Request, res: Response) : Promise<Response> {
         const userId : string = req.params.id
+        const currentDate = new Date()
         if(!userId){
             return res.status(422).json({ message : 'user id is required'})
         }
-        const userStories = await Storie.find({ postedBy : userId})
+        const userStories = await Storie.find({$and: [{ postedBy : userId}, {expiresAt : {$gt : currentDate}}]}) //get storie when current date is smaller than current date
             .populate("postedBy", ["name", "username", "imageProfile"])
             .populate("visualizedBy", ["name", "username", "imageProfile"])
         return res.status(200).json({ stories : userStories })
