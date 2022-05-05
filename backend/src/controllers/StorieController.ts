@@ -54,6 +54,23 @@ export default class StorieController {
 
     }
 
+    public static async getFollowingStories(req: Request, res: Response) : Promise<Response> {
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        //get current date
+        const currentDate = new Date()
+        const stories = await Storie.find({$and: [{ postedBy : {$in : user.following}}, {expiresAt : {$gt : currentDate}}]})
+
+        return res.status(200).json({ stories })
+    }
+
     public static async deleteStorie(req: Request, res: Response) : Promise<Response> {
         const { storieId } : { storieId : string} = req.body
         if(!storieId){
