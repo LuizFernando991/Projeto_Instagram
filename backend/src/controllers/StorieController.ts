@@ -67,8 +67,34 @@ export default class StorieController {
         //get current date
         const currentDate = new Date()
         const stories = await Storie.find({$and: [{ postedBy : {$in : user.following}}, {expiresAt : {$gt : currentDate}}]})
+            .populate("visualizedBy", ["name", "username", "imageProfile"])
+            .populate("postedBy", ["name", "username", "imageProfile"])
 
         return res.status(200).json({ stories })
+    }
+
+    public static async visualizateStorie(req: Request, res: Response) : Promise<Response> {
+        const { storieId } : { storieId : string } = req.body
+         //get user
+         const token = getToken(req)
+         if(!token){
+             return res.status(422).json({ message : 'invalid token' })
+         }
+         const user = await getUserByToken(token, res)
+         if(!user){
+             return res.status(422).json({ message : 'invalid token' })
+         }
+         //updating
+         try{
+            const newStorie = await Storie.findByIdAndUpdate(storieId, {
+                $addToSet: {visualizedBy: user._id}
+            }, { new : true})
+                .populate("visualizedBy", ["name", "username", "imageProfile"])
+                .populate("postedBy", ["name", "username", "imageProfile"])
+            return res.status(200).json({ storie : newStorie})
+         }catch(err) {
+             return res.status(500).json({ message : 'internal error'})
+         }
     }
 
     public static async deleteStorie(req: Request, res: Response) : Promise<Response> {
