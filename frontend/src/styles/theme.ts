@@ -10,8 +10,8 @@ export const theme = {
         white: '#FFF',
     },
     borderColor: {
-        default: 'rgba(112, 112, 112, 0.4)',
-        focus: 'rgba(112, 112, 112, 0.8)',
+        default: 'rgba(219, 219, 219, 1)',
+        focus: 'rgba(138, 138, 138, 0.5)',
     },
     font: {
         family: {
@@ -21,15 +21,5 @@ export const theme = {
     },
     media: {
         lteMedium: '(max-width: 768px)',
-    },
-    spacings: {
-        xsmall: '8rem',
-        small: '1.6rem',
-        medium: '2.4rem',
-        large: '3.2rem',
-        xlarge: '4.0rem',
-        xxlarge: '4.8rem',
-        huge: '5.6rem',
-        xhuge: '6.4rem',
     },
 } as const

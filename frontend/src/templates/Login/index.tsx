@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { TextLogo } from '../../components/TextLogo'
 import { AuthInput } from '../../components/AuthInput'
 import { AuthButton } from '../../components/AuthButton'
+import { SeparateLine } from '../../components/SeparateLine'
 import * as Styled from './styles'
 
 export function Login() {
@@ -24,7 +25,7 @@ export function Login() {
                         <AuthButton text="Log in" />
                     </form>
                     <div className="forgot">
-                        <div className="separator"></div>
+                        <SeparateLine />
                         <a href="#">Forgot password?</a>
                     </div>
                 </Styled.Login>

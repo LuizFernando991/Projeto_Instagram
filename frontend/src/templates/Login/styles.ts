@@ -6,6 +6,10 @@ export const Container = styled.main`
     margin-top: 10rem;
 `
 
+export const PhonesContainer = styled.div`
+    margin-right: 3rem;
+`
+
 export const Login = styled.div`
     background: ${({ theme }) => theme.backgroundColors.white};
     width: 35rem;
@@ -37,13 +41,6 @@ export const Login = styled.div`
         align-items: center;
     }
 
-    .separator {
-        height: 1px;
-        width: 100%;
-        background: #8e8e8e;
-        margin-bottom: 1rem;
-    }
-
     a {
         font-size: 1.3rem;
         color: ${({ theme }) => theme.colors.blue};
@@ -68,7 +65,4 @@ export const SingUp = styled.div`
         font-weight: 700;
         color: ${({ theme }) => theme.colors.blue};
     }
-`
-export const PhonesContainer = styled.div`
-    margin-right: 5rem;
 `

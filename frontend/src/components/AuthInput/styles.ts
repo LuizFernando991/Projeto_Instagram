@@ -16,7 +16,7 @@ export const Input = styled.input`
         color: #8e8e8e;
     }
 
-    &::focus {
+    &:focus {
         border: 0.1rem solid ${({ theme }) => theme.borderColor.focus};
     }
 `
