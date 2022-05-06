@@ -2,7 +2,7 @@ import express from 'express'
 import UserController from '../controllers/UserController'
 import imageUpload from '../helpers/image-upload'
 import registerMiddleware from '../middlewares/registeMiddleware'
-import singupMiddleware from '../middlewares/singupMiddleware'
+import loginMiddleware from '../middlewares/loginMiddleware'
 import verifyTokenMiddleware from '../middlewares/verifyTokenMiddleware'
 import editUserMiddleware from '../middlewares/editUserMiddleware'
 
@@ -10,7 +10,7 @@ import editUserMiddleware from '../middlewares/editUserMiddleware'
 const router = express.Router()
 
 router.post('/register', registerMiddleware, UserController.registerUser)
-router.post('/login', singupMiddleware, UserController.singUp)
+router.post('/login', loginMiddleware, UserController.singUp)
 router.post('/searchuser', verifyTokenMiddleware, UserController.searchUser)
 router.put('/follow', verifyTokenMiddleware, UserController.follow)
 router.put('/clearnotifications', verifyTokenMiddleware, UserController.clearNotifications)

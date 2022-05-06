@@ -1,4 +1,8 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+interface Props {
+    errorMessage: string | null
+}
 
 export const Container = styled.main`
     display: flex;
@@ -14,9 +18,13 @@ export const Container = styled.main`
 
 export const PhonesContainer = styled.div`
     margin-right: 3rem;
+
+    @media (max-width: 900px) {
+        display: none;
+    }
 `
 
-export const Login = styled.div`
+export const Login = styled.div<Props>`
     background: ${({ theme }) => theme.backgroundColors.white};
     width: 35rem;
     min-height: 47rem;
@@ -38,6 +46,17 @@ export const Login = styled.div`
         display: flex;
         flex-direction: column;
         width: 100%;
+
+        p {
+            text-align: center;
+            color: red;
+            font-size: 1.2rem;
+            font-weight: 400;
+            visibility: hidden;
+            ${({ errorMessage }) => css`
+                ${errorMessage ? 'visibility: visible;' : ''}
+            `}
+        }
     }
 
     .forgot {

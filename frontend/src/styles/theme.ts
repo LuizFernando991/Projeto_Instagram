@@ -19,7 +19,4 @@ export const theme = {
             secondary: "'Montserrat', Roboto, sans-serif",
         },
     },
-    media: {
-        lteMedium: '(max-width: 768px)',
-    },
 } as const

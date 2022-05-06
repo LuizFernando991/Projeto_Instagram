@@ -6,12 +6,5 @@ export type TextLogoProps = {
 }
 
 export function TextLogo({ width, height }: TextLogoProps) {
-    return (
-        <Image
-            src="/assets/images/instagram-text-logo.png"
-            width={width}
-            height={height}
-            alt="logo"
-        />
-    )
+    return <Image src="/assets/images/instagram-text-logo.png" width={width} height={height} alt="logo" />
 }

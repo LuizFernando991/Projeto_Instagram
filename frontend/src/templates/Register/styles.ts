@@ -1,4 +1,8 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+interface Props {
+    errorMessage: string | null
+}
 
 export const Container = styled.main`
     display: flex;
@@ -14,7 +18,7 @@ export const Container = styled.main`
     max-width: 35rem;
 `
 
-export const RegisterContainer = styled.div`
+export const RegisterContainer = styled.div<Props>`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,6 +32,18 @@ export const RegisterContainer = styled.div`
         flex-direction: column;
         width: 100%;
         margin-top: 2rem;
+        p {
+            text-align: center;
+            color: red;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-top: -10px;
+            margin-bottom: 1rem;
+            visibility: hidden;
+            ${({ errorMessage }) => css`
+                ${errorMessage ? 'visibility: visible;' : ''}
+            `}
+        }
     }
 
     h2 {
