@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import api from '../../helpers/api'
+import { api } from '../../helpers/api'
 import { AuthContext } from '../../contexts/AuthContext'
 import { setCookie } from 'nookies'
 import { TextLogo } from '../../components/TextLogo'
@@ -32,6 +32,7 @@ export function Login() {
                 maxAge: 60 * 60 * 24 * 7, // 7 days
             })
             setUser(data.data.user)
+            console.log(data.data.user)
             //route user to home page
         } catch (err) {
             switch (err.response.data.message) {

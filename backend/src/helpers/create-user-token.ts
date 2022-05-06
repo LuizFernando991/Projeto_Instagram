@@ -9,18 +9,11 @@ async function createToken (user : UserInterface, req : Request, res : Response)
         id : user._id
     }, 'secret')
 
-    const authenticatedUser = {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        username: user.username,
-        imageProfile: user.imageProfile,
-    }
 
     return res.status(200).json({
         message : "authenticated",
         token : token,
-        user : authenticatedUser
+        user : user
     })
 }
 export default createToken

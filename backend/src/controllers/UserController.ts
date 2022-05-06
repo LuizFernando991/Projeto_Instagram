@@ -42,10 +42,12 @@ export default class UserController {
         }
     }
 
-    public static async singUp(req: Request, res: Response) : Promise<Response> {
+    public static async login(req: Request, res: Response) : Promise<Response> {
         const { email, password } : {email: string, password: string} = req.body
         //Check if user exists
-        const user = await User.findOne({ email : email })
+        const user = await User.findOne({ email : email }).select('-password')
+            .populate("followers", ["username", "name", "imageProfile"])
+            .populate("following", ["username", "name", "imageProfile"])
         if(!user){
             return res.status(422).json({message : 'user not found'})
         }
@@ -57,8 +59,21 @@ export default class UserController {
         return createToken(user, req, res)
     }
 
+    public static async getUserByToken(req: Request, res: Response) : Promise<Response> {
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res, false, true)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        return res.status(200).json({ user })
+    }
+
     public static async getUserByUsername(req: Request, res: Response) : Promise<Response> {
-        const username : string = req.params.username
+        const username: string = req.params.username
         const user = await User.findOne({ username : username }).select('-password -email')
             .populate("followers", ["username", "name", "imageProfile"])
             .populate("following", ["username", "name", "imageProfile"])

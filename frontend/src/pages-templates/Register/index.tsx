@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import api from '../../helpers/api'
+import { api } from '../../helpers/api'
 import { AuthContext } from '../../contexts/AuthContext'
 import { setCookie } from 'nookies'
 import { useContext, useState } from 'react'
@@ -38,7 +38,7 @@ export function Register() {
         } catch (err) {
             switch (err.response.data.message) {
                 case 'email already used':
-                    setErrorMessage('Email already userd')
+                    setErrorMessage('Email already used')
                     break
                 case 'username already user':
                     setErrorMessage('Username already used')
@@ -76,8 +76,13 @@ export function Register() {
                     <AuthInput name="email" onChange={handleOnInputChange} placeholder="Email" />
                     <AuthInput name="name" onChange={handleOnInputChange} placeholder="Name" />
                     <AuthInput name="username" onChange={handleOnInputChange} placeholder="Username" />
-                    <AuthInput name="password" onChange={handleOnInputChange} placeholder="Password" />
-                    <AuthInput name="confirmPassword" onChange={handleOnInputChange} placeholder="Confirm Password" />
+                    <AuthInput type="password" name="password" onChange={handleOnInputChange} placeholder="Password" />
+                    <AuthInput
+                        type="password"
+                        name="confirmPassword"
+                        onChange={handleOnInputChange}
+                        placeholder="Confirm Password"
+                    />
                     <AuthButton onClick={handleOnSubmit} text="Sing up" />
                     <p>{errorMessage ? errorMessage : 'Placeholder'}</p>
                 </form>

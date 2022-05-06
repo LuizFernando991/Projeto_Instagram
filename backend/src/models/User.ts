@@ -2,6 +2,7 @@ import mongoose from '../db/conn'
 import { Schema, Document, ObjectId } from 'mongoose'
 
 export interface UserInterface extends Document {
+    select: any
     _id: ObjectId
     name: string
     username: string

@@ -1,4 +1,4 @@
-import { Home } from '../templates/Home'
+import { Home } from '../pages-templates/Home'
 export default function Index() {
     return <Home />
 }

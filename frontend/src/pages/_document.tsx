@@ -31,9 +31,7 @@ export default class MyDocument extends Document {
         return (
             <Html lang="pt-BR">
                 <Head>
-                    {
-                        //<title>Instagram - Clone</title>
-                    }
+                    <title>Instagram - Clone</title>
                     <link rel="shortcut icon" href="/assets/favicon.ico" />
                 </Head>
                 <body>
