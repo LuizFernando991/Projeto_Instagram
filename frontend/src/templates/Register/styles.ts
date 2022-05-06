@@ -2,61 +2,55 @@ import styled from 'styled-components'
 
 export const Container = styled.main`
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
     margin: auto;
+    max-width: 35rem;
 `
 
-export const PhonesContainer = styled.div`
-    margin-right: 3rem;
-`
-
-export const Login = styled.div`
-    background: ${({ theme }) => theme.backgroundColors.white};
-    width: 35rem;
-    min-height: 47rem;
-    margin: 0 auto;
+export const RegisterContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
+    background-color: ${({ theme }) => theme.backgroundColors.white};
+    width: 100%;
+    padding: 3rem 4rem;
     border: 0.1rem solid ${({ theme }) => theme.borderColor.default};
-    padding: 2rem 4rem;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-
-    img {
-        margin-bottom: 1rem;
-    }
 
     form {
         display: flex;
         flex-direction: column;
         width: 100%;
+        margin-top: 2rem;
     }
 
-    .forgot {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    h2 {
+        text-align: center;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        color: ${({ theme }) => theme.colors.secondaryColor};
+    }
+    p {
+        color: ${({ theme }) => theme.colors.secondaryColor};
+        text-align: center;
+        font-size: 1.1rem;
     }
 
-    a {
-        font-size: 1.3rem;
-        color: ${({ theme }) => theme.colors.blue};
+    p span {
+        font-weight: bold;
     }
 `
 
-export const SingUp = styled.div`
-    width: 35rem;
+export const Login = styled.div`
+    width: 100%;
     background: ${({ theme }) => theme.backgroundColors.white};
-    margin: 0 auto;
+    margin-top: 3rem;
     border: 0.1rem solid ${({ theme }) => theme.borderColor.default};
     padding: 2rem;
     text-align: center;
