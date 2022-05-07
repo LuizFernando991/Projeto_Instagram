@@ -2,6 +2,7 @@ export const theme = {
     colors: {
         primaryColor: '#0A1128',
         secondaryColor: '#8e8e8e',
+        softGrey: '#8a8a8a',
         white: '#fff',
         blue: '#0095f6',
     },
@@ -10,7 +11,7 @@ export const theme = {
         white: '#FFF',
     },
     borderColor: {
-        default: 'rgba(219, 219, 219, 1)',
+        default: 'rgba(219, 219, 219, 0.9)',
         focus: 'rgba(138, 138, 138, 0.5)',
     },
     font: {

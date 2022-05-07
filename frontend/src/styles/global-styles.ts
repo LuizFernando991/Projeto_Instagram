@@ -9,6 +9,7 @@ export const GlobalStyles = createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
     font-size: 62.5%;
   }
 
@@ -18,6 +19,11 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   a {
+      text-decoration: none;
+  }
+
+  a:visited {
+      color: black;
       text-decoration: none;
   }
 

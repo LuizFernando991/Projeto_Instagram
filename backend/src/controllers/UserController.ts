@@ -45,7 +45,7 @@ export default class UserController {
     public static async login(req: Request, res: Response) : Promise<Response> {
         const { email, password } : {email: string, password: string} = req.body
         //Check if user exists
-        const user = await User.findOne({ email : email }).select('-password')
+        const user = await User.findOne({ email : email })
             .populate("followers", ["username", "name", "imageProfile"])
             .populate("following", ["username", "name", "imageProfile"])
         if(!user){
@@ -74,7 +74,7 @@ export default class UserController {
 
     public static async getUserByUsername(req: Request, res: Response) : Promise<Response> {
         const username: string = req.params.username
-        const user = await User.findOne({ username : username }).select('-password -email')
+        const user = await User.findOne({ username : username }).select('-password -email -createdAt -updateAt -notifications')
             .populate("followers", ["username", "name", "imageProfile"])
             .populate("following", ["username", "name", "imageProfile"])
 
@@ -268,7 +268,7 @@ export default class UserController {
     public static async searchUser(req: Request, res: Response) : Promise<Response> {
         const { query } : { query : string } = req.body
         let userPattern = new RegExp("^"+query)
-        const users = await User.find({username : {$regex:userPattern}}, null, { limit: 8})
+        const users = await User.find({username : {$regex:userPattern}}, null, { limit: 20}).select('-password -email -createdAt -updatedAt -followers -following -notifications -__v')
         return res.status(200).json({ users })
 
     }

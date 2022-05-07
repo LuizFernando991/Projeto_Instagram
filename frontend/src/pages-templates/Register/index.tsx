@@ -32,7 +32,9 @@ export function Register() {
             const data = await api.post('/user/register', userRegister)
             setCookie(undefined, 'instagram-token', data.data.token, {
                 maxAge: 60 * 60 * 24 * 7, // 7 days
+                path: '/',
             })
+            api.defaults.headers['Authorization'] = `Bearer ${data.data.token}`
             setUser(data.data.user)
             //route user to home page
         } catch (err) {

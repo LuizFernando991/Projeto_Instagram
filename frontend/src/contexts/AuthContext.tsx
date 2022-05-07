@@ -27,7 +27,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (token) {
             api.get('/user/currentuser').then((res) => {
                 setUser(res.data.user)
-                console.log(res.data.user)
             })
         }
     }, [])
