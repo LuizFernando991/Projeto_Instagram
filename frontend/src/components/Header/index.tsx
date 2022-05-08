@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import { SearchBar } from '../SearchBar'
+import { NavBar } from '../NavBar'
 import { GrInstagram } from 'react-icons/gr'
 import { TextLogo } from '../TextLogo'
+import { ReactElement } from 'react'
 import * as Styled from './styles'
 
-export function Header() {
+export function Header(): ReactElement {
     return (
         <Styled.HeaderContainer>
             <Styled.Header>
@@ -24,8 +26,13 @@ export function Header() {
                     </Link>
                 </div>
                 {/* Search */}
-                <SearchBar />
+                <div>
+                    <SearchBar />
+                </div>
                 {/* Navbar */}
+                <div>
+                    <NavBar />
+                </div>
             </Styled.Header>
         </Styled.HeaderContainer>
     )

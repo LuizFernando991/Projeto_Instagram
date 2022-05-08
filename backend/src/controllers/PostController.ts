@@ -141,7 +141,8 @@ export default class PostController {
                 const postedUser = newPost.postedBy
                 const notificate = {
                     notificationType: 'like',
-                    notificationBy: user._id
+                    notificationBy: user._id,
+                    createdAt: new Date()
                 }
                 await User.findByIdAndUpdate(postedUser, {
                     $push: {notifications: notificate}
@@ -213,7 +214,8 @@ export default class PostController {
                 const postedUser = newPost.postedBy
                 const notificate = {
                     notificationType: 'comment',
-                    notificationBy: user._id
+                    notificationBy: user._id,
+                    createdAt: new Date()
                 }
                 await User.findByIdAndUpdate(postedUser, {
                     $push: {notifications: notificate}

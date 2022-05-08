@@ -14,6 +14,7 @@ type User = {
     email: string
     username: string
     imageProfile: string
+    notifications: []
 }
 
 export const AuthContext = createContext({} as AuthContextType)

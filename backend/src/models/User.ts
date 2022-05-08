@@ -47,6 +47,7 @@ const UserSchema = new Schema({
     }],
     notifications : [{
         notificationType : String,
+        createdAt: Date,
         notificationBy: {
             type : Schema.Types.ObjectId,
             ref: "User"

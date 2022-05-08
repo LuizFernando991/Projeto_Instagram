@@ -5,7 +5,6 @@ type Props = {
 }
 
 export const SearchBarContainer = styled.div<Props>`
-    width: 100px;
     position: relative;
 
     svg {

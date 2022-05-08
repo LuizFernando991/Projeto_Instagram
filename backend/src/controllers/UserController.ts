@@ -198,7 +198,8 @@ export default class UserController {
             //updating followed user
             const notificate = {
                 notificationType: 'follow',
-                notificationBy: user._id
+                notificationBy: user._id,
+                createdAt: new Date()
             }
             const followedUser = await User.findByIdAndUpdate(userId, {
                 $addToSet: {followers: user._id},

@@ -13,7 +13,7 @@ export const DropdownContainer = styled.div<Props>`
     width: 33rem;
     height: 35rem;
     top: 128%;
-    left: -30%;
+    left: -9%;
 
     .loading {
         position: relative;

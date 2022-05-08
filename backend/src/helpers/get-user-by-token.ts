@@ -13,6 +13,7 @@ async function getUserByToken (token : string , res : Response, withPassword=fal
         user = await User.findOne({ _id : id })
     }else if(withPopulate){
         user = await User.findOne({ _id : id }).select('-password')
+        .populate("notifications.notificationBy", ["username", "name", "imageProfile"])
         .populate("followers", ["username", "name", "imageProfile"])
         .populate("following", ["username", "name", "imageProfile"])
     }else{
