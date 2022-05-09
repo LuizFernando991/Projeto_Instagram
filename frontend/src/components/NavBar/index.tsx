@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router'
 import { ReactElement, useContext, useState } from 'react'
 import { NotificationsDropdown } from '../NotificationsDropdown'
+import { ProfileDropdown } from '../ProfileDropdown'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import * as Styled from './styles'
 import { AuthContext } from '../../contexts/AuthContext'
@@ -12,6 +14,7 @@ export type NavBarProps = {
 
 export function NavBar({ isNewPostOpen = false }: NavBarProps): ReactElement {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
+    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false)
     const router = useRouter()
     const currentPage = router.pathname
     const { user } = useContext(AuthContext)
@@ -233,6 +236,24 @@ export function NavBar({ isNewPostOpen = false }: NavBarProps): ReactElement {
                     setIsNotificationsOpen={setIsNotificationsOpen}
                 />
             </Styled.Notifications>
+            <Styled.Profile>
+                {user?.imageProfile ? (
+                    <Image
+                        onClick={() => setIsProfileOpen(true)}
+                        width="24"
+                        height="24"
+                        src={`http://localhost:5050/images/profileImages/${user.imageProfile}`}
+                    />
+                ) : (
+                    <Image
+                        onClick={() => setIsProfileOpen(true)}
+                        width="24"
+                        height="24"
+                        src="/assets/images/defaultImageProfile.jpg"
+                    />
+                )}
+                <ProfileDropdown isOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            </Styled.Profile>
         </Styled.NavBar>
     )
 }

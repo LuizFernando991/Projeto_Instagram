@@ -27,7 +27,6 @@ export function SearchBar() {
             if (data.data.users.lenght === 0) {
                 setSearchResults(null)
             } else {
-                console.log(data.data.users)
                 setSearchResults(data.data.users)
             }
             setIsLoading(false)

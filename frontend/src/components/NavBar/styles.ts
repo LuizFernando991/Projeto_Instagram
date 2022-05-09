@@ -13,3 +13,11 @@ export const NavBar = styled.nav`
 export const Notifications = styled.div`
     position: relative;
 `
+export const Profile = styled.div`
+    position: relative;
+    margin-left: 24px;
+    img {
+        cursor: pointer;
+        border-radius: 555px;
+    }
+`
