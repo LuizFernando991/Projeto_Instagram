@@ -66,11 +66,23 @@ export default class StorieController {
         }
         //get current date
         const currentDate = new Date()
-        const stories = await Storie.find({$and: [{ postedBy : {$in : user.following}}, {expiresAt : {$gt : currentDate}}]})
-            .populate("visualizedBy", ["name", "username", "imageProfile"])
-            .populate("postedBy", ["name", "username", "imageProfile"])
+        //get all stories
+        let allStories : any = []
 
-        return res.status(200).json({ stories })
+        for(let i=0; i <= user.following.length; i++){
+            const storie =  await Storie.find({$and: [{ postedBy : user.following[i] }, {expiresAt : {$gt : currentDate}}]})
+                .populate("visualizedBy", ["name", "username", "imageProfile"])
+                .populate("postedBy", ["name", "username", "imageProfile"])
+
+            if(storie.length){
+                let storieData = {
+                    postedBy : storie[0].postedBy,
+                    stories : storie
+                }
+                allStories.push(storieData)
+            }
+        }
+        return res.status(200).json({ stories : allStories})
     }
 
     public static async visualizateStorie(req: Request, res: Response) : Promise<Response> {
