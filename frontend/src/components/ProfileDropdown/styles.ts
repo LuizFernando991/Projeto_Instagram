@@ -13,7 +13,7 @@ export const DropdownContainer = styled.div<Props>`
     width: 18rem;
     height: 12rem;
     top: 150%;
-    right: -7px;
+    right: -8px;
     z-index: 99999;
     font-size: 1.2rem;
 

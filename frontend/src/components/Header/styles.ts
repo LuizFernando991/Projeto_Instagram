@@ -8,7 +8,7 @@ export const HeaderContainer = styled.header`
     align-items: center;
     justify-content: center;
     border: 1px solid ${({ theme }) => theme.borderColor.default};
-    position: fixed;
+    position: sticky;
 `
 export const Header = styled.div`
     display: flex;
