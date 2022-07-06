@@ -7,7 +7,9 @@ export interface StorieInterface extends Document {
     _id: ObjectId
     images: String
     postedBy: ObjectId
-    visualizedBy: Array<ObjectId>
+    visualizedBy: Array<{
+        _id: ObjectId
+    }>
 }
 
 const StorieSchema = new Schema({

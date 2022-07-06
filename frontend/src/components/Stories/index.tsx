@@ -4,7 +4,11 @@ import { StoriesType } from '../../pages'
 import { StorieItem } from '../StorieItem'
 import * as Styled from './styles'
 
-export function Stories({ stories }: StoriesType) {
+interface Stories extends StoriesType {
+    onStorieClick: (index: number) => void
+}
+
+export function Stories({ stories, onStorieClick }: Stories) {
     const [scrollX, setScrollX] = useState<number>(0)
     const [isLeftArrowOn, setIsLeftArrowOn] = useState<boolean>(false)
     const [isRightArrowOn, setIsRightArrowOn] = useState<boolean>(false)
@@ -44,7 +48,7 @@ export function Stories({ stories }: StoriesType) {
             <BsFillArrowRightCircleFill className="arrow rightArrow" onClick={handleRightArrow} />
             <Styled.Stories style={{ marginLeft: `${scrollX}px` }}>
                 {stories.map((item, index: number) => (
-                    <StorieItem key={index} storie={item} />
+                    <StorieItem onStorieClick={onStorieClick} key={index} index={index} storie={item} />
                 ))}
             </Styled.Stories>
         </Styled.StoriesContainer>

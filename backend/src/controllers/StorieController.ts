@@ -31,10 +31,13 @@ export default class StorieController {
             expiresAt: data,
         })
         try{
-            const newStorie = await storie.save()
-            return res.status(200).json({  storie : newStorie})
+            await storie.save()
+            //get current date
+            const currentDate = new Date()
+            const userStories = await Storie.find({$and: [{ postedBy : user._id}, {expiresAt : {$gt : currentDate}}]})
+                .populate("visualizedBy", ["name", "username", "imageProfile"])
+            return res.status(200).json({  storie : userStories})
         }catch(err){
-            console.log(err)
             return res.status(500).json({ message : 'internal error'})
         }
 
@@ -54,6 +57,23 @@ export default class StorieController {
 
     }
 
+    public static async getCurrentUserStories(req: Request, res: Response) : Promise<Response> {
+        //get user
+        const token = getToken(req)
+        if(!token){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        const user = await getUserByToken(token, res)
+        if(!user){
+            return res.status(422).json({ message : 'invalid token' })
+        }
+        //get current date
+        const currentDate = new Date()
+        const userStories = await Storie.find({$and: [{ postedBy : user._id}, {expiresAt : {$gt : currentDate}}]})
+            .populate("visualizedBy", ["name", "username", "imageProfile"])
+        return res.status(200).json({ stories : userStories })
+    }
+
     public static async getFollowingStories(req: Request, res: Response) : Promise<Response> {
         //get user
         const token = getToken(req)
@@ -70,13 +90,27 @@ export default class StorieController {
         let allStories : any = []
 
         for(let i=0; i <= user.following.length; i++){
-            const storie =  await Storie.find({$and: [{ postedBy : user.following[i] }, {expiresAt : {$gt : currentDate}}]})
-                .populate("visualizedBy", ["name", "username", "imageProfile"])
+            let storie =  await Storie.find({$and: [{ postedBy : user.following[i] }, {expiresAt : {$gt : currentDate}}]})
                 .populate("postedBy", ["name", "username", "imageProfile"])
+                .populate({
+                    path: 'visualizedBy',
+                    match: {_id: user._id},
+                    select: '_id'
+
+                })
 
             if(storie.length){
+                
+                let isVisualized = true
+                for(let i = 0; i < storie.length; i ++) {
+                    if(storie[i].visualizedBy.length === 0) {
+                        isVisualized = false
+                    }
+                }
+
                 let storieData = {
                     postedBy : storie[0].postedBy,
+                    isAllVisualized : isVisualized,
                     stories : storie
                 }
                 allStories.push(storieData)

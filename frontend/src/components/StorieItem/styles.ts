@@ -7,6 +7,7 @@ export type Props = {
 export const StorieItem = styled.div<Props>`
     display: inline-block;
     transform: scale(0.9);
+    cursor: pointer;
 
     & > div {
         border-radius: 6666px;

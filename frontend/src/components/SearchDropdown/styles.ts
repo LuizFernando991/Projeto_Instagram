@@ -9,7 +9,7 @@ export const DropdownContainer = styled.div<Props>`
     background-color: ${({ theme }) => theme.backgroundColors.white};
     border-radius: 6px;
     display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.0975);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.09);
     width: 33rem;
     height: 35rem;
     top: 128%;

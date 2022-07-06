@@ -11,6 +11,7 @@ export type StorieType = {
         username: string
         imageProfile: string
     }
+    isAllVisualized: boolean
     stories: Array<{
         _id: string
         image: string
@@ -31,12 +32,34 @@ export type StorieType = {
     }>
 }
 
+export type UserStoriesType = {
+    stories: Array<{
+        _id: string
+        image: string
+        postedBy: {
+            _id: string
+            name: string
+            username: string
+            imageProfile: string
+        }
+        visualizedBy: Array<{
+            _id: string
+            name: string
+            username: string
+            imageProfile: string
+        }>
+        expiredAt: Date
+        updatedAt: Date
+        createdAt: Date
+    }>
+}
+
 export type StoriesType = {
     stories: Array<StorieType>
 }
 
-export default function Index({ followingStories }: HomeProps) {
-    return <Home followingStories={followingStories} />
+export default function Index({ followingStories, currentUserStories }: HomeProps) {
+    return <Home followingStories={followingStories} currentUserStories={currentUserStories} />
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -51,9 +74,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         }
     }
     const api = getAPIClient(ctx)
-    const data = await api.get('/storie/followingstories')
-    const followingStories = data.data
+    const followingStoriesData = await api.get('/storie/followingstories')
+    const followingStories = followingStoriesData.data
+    const currentUserStoriesData = await api.get('/storie/currentUserStories')
+    const currentUserStories = currentUserStoriesData.data
     return {
-        props: { followingStories },
+        props: { followingStories, currentUserStories },
     }
 }

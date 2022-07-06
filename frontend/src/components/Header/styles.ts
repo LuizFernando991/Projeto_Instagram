@@ -9,6 +9,7 @@ export const HeaderContainer = styled.header`
     justify-content: center;
     border: 1px solid ${({ theme }) => theme.borderColor.default};
     position: sticky;
+    z-index: 2;
 `
 export const Header = styled.div`
     display: flex;
