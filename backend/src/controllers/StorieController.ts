@@ -135,7 +135,7 @@ export default class StorieController {
             const newStorie = await Storie.findByIdAndUpdate(storieId, {
                 $addToSet: {visualizedBy: user._id}
             }, { new : true})
-                .populate("visualizedBy", ["name", "username", "imageProfile"])
+                .select("-visualizedBy")
                 .populate("postedBy", ["name", "username", "imageProfile"])
             return res.status(200).json({ storie : newStorie})
          }catch(err) {

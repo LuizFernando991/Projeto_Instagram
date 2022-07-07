@@ -1,7 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
+import { useTransition } from 'react-spring'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 import { FiMoreVertical } from 'react-icons/fi'
+import { FaTrash } from 'react-icons/fa'
+import { FaRegEye } from 'react-icons/fa'
 import { RiCloseLine } from 'react-icons/ri'
 import { AuthContext } from '../../contexts/AuthContext'
 import { UserStoriesType } from '../../pages'
@@ -15,15 +18,14 @@ export type UserStorieCardProps = {
 
 export function UserStorieCard({ allCurrentUserStories, setIsUserStoriesOpen }: UserStorieCardProps) {
     const { user } = useContext(AuthContext)
-    const [image, setImage] = useState('')
     const [currentStorie, setCurrentStorie] = useState<number>(0)
     const [isArrowShow, setIsArrowShow] = useState<boolean>(false)
-    const [isDeleteDropDown, setIsDeleteDropDown] = useState<boolean>(false)
-    useEffect(() => {
-        if (user) {
-            setImage(user.imageProfile)
-        }
-    }, [user])
+    const [isVisualizationsShow, setIsVisualizationsShow] = useState<boolean>(false)
+    const transition = useTransition(isVisualizationsShow, {
+        from: { height: 0, opacity: 0 },
+        enter: { height: 340, opacity: 1 },
+        leave: { height: 0, opacity: 0 },
+    })
     useEffect(() => {
         if (allCurrentUserStories.stories.length) {
             setIsArrowShow(true)
@@ -57,8 +59,12 @@ export function UserStorieCard({ allCurrentUserStories, setIsUserStoriesOpen }: 
             isArrowShow={isArrowShow}
         >
             <Styled.UserInfoContainer>
-                {image ? (
-                    <Image width="35" height="35" src={`http://localhost:5050/images/profileImages/${image}`} />
+                {user?.imageProfile ? (
+                    <Image
+                        width="35"
+                        height="35"
+                        src={`http://localhost:5050/images/profileImages/${user?.imageProfile}`}
+                    />
                 ) : (
                     <Image width="35" height="35" src="/assets/images/defaultImageProfile.jpg" />
                 )}
@@ -67,14 +73,55 @@ export function UserStorieCard({ allCurrentUserStories, setIsUserStoriesOpen }: 
 
             <BsFillArrowLeftCircleFill className="arrow leftArrow" onClick={handleLeftArrow} />
             <BsFillArrowRightCircleFill className="arrow rightArrow" onClick={handleRightArrow} />
-            <FiMoreVertical className="more" onClick={() => setIsDeleteDropDown(true)} />
-            {isDeleteDropDown ? (
-                <Styled.DeleteDropDown>
-                    <RiCloseLine onClick={() => setIsDeleteDropDown(false)} className="close-buttom" />
-                    <li>
-                        <p onClick={handleOnDeleteClick}>Delete Story</p>
-                    </li>
-                </Styled.DeleteDropDown>
+            <FiMoreVertical className="more" onClick={() => setIsVisualizationsShow(true)} />
+            {transition((style, item) =>
+                item ? (
+                    <Styled.VisualizatedList style={style} isVisualizationsShow={isVisualizationsShow}>
+                        <div className="header">
+                            <FaRegEye className="eye-icon" />
+                            <p>{allCurrentUserStories.stories[currentStorie].visualizedBy.length}</p>
+                            <RiCloseLine
+                                className="close-buttom-visualizations"
+                                onClick={() => setIsVisualizationsShow(false)}
+                            />
+                            <FaTrash className="delete-buttom" onClick={handleOnDeleteClick} />
+                        </div>
+                        {allCurrentUserStories.stories.length ? (
+                            <Styled.Ul style={style} isVisualizationsShow={isVisualizationsShow}>
+                                {allCurrentUserStories.stories[currentStorie].visualizedBy.map((item, index) => (
+                                    <li key={index}>
+                                        <div className="image-visualizated">
+                                            {item.imageProfile ? (
+                                                <Image
+                                                    width="35"
+                                                    height="35"
+                                                    src={`http://localhost:5050/images/profileImages/${item.imageProfile}`}
+                                                />
+                                            ) : (
+                                                <Image
+                                                    width="35"
+                                                    height="35"
+                                                    src="/assets/images/defaultImageProfile.jpg"
+                                                />
+                                            )}
+                                        </div>
+                                        <div className="info">
+                                            <h4>{item.username}</h4>
+                                            <p>{item.name}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </Styled.Ul>
+                        ) : (
+                            'Não tem stories'
+                        )}
+                    </Styled.VisualizatedList>
+                ) : (
+                    ''
+                ),
+            )}
+            {isVisualizationsShow ? (
+                <Styled.VisualizatedContainer onClick={() => setIsVisualizationsShow(false)} />
             ) : (
                 ''
             )}

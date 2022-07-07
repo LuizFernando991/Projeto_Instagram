@@ -11,12 +11,6 @@ export type UserStoriesItemProps = {
 
 export function UserStorieItem({ haveStories, setIsUserStoriesOpen }: UserStoriesItemProps) {
     const { user } = useContext(AuthContext)
-    const [image, setImage] = useState('')
-    useEffect(() => {
-        if (user) {
-            setImage(user.imageProfile)
-        }
-    }, [user])
 
     function handleOnClick() {
         if (haveStories) {
@@ -26,8 +20,12 @@ export function UserStorieItem({ haveStories, setIsUserStoriesOpen }: UserStorie
     return (
         <Styled.UserStorieItem onClick={handleOnClick} haveStories={haveStories}>
             <div className="border">
-                {image ? (
-                    <Image width="62.3" height="62.3" src={`http://localhost:5050/images/profileImages/${image}`} />
+                {user?.imageProfile ? (
+                    <Image
+                        width="62.3"
+                        height="62.3"
+                        src={`http://localhost:5050/images/profileImages/${user?.imageProfile}`}
+                    />
                 ) : (
                     <Image width="62.3" height="62.3" src="/assets/images/defaultImageProfile.jpg" />
                 )}

@@ -1,7 +1,20 @@
 import styled, { css } from 'styled-components'
+import { animated } from 'react-spring'
 
 export type Props = {
     isArrowShow: boolean
+}
+
+export type animatedProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    style: any
+    isVisualizationsShow: boolean
+}
+
+export type animatedUl = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    style: any
+    isVisualizationsShow: boolean
 }
 
 export const UserCardContainer = styled.div<Props>`
@@ -65,48 +78,128 @@ export const UserInfoContainer = styled.div`
         font-size: 1.2rem;
     }
 `
-export const DeleteDropDown = styled.ul`
-    width: 120px;
-    height: 55px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: ${({ theme }) => theme.backgroundColors.grey};
+
+export const VisualizatedContainer = styled.div`
     position: absolute;
-    top: 10px;
-    right: 10px;
+    left: -40px;
+    background-color: transparent;
+    width: 480px;
+    height: 100%;
+`
 
-    li {
+export const VisualizatedList = styled(animated.div)<animatedProps>`
+    width: 390px;
+    height: 340px;
+    border: 1px solid ${({ theme }) => theme.borderColor.focus};
+    border-radius: 10px 10px 0px 0px;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 9999;
+
+    .eye-icon {
+        color: ${({ theme }) => theme.colors.secondaryColor};
+        font-size: 17px;
+        z-index: 9999;
+        position: initial;
+        margin-top: 2px;
+        cursor: auto;
+    }
+
+    .header {
         width: 100%;
-        margin-top: 20px;
-        height: 30px;
-        cursor: pointer;
+        height: 20px;
+        padding: 20px;
         display: flex;
-        justify-content: center;
         align-items: center;
-        flex-direction: column;
-        border-top: 1px solid ${({ theme }) => theme.borderColor.default};
-        &:hover {
-            background-color: #f1f1f1;
-        }
+        border-bottom: 1px solid ${({ theme }) => theme.borderColor.focus};
+        ${({ isVisualizationsShow }) => css`
+            ${isVisualizationsShow ? '' : 'display: none;'}
+        `}
+    }
 
-        p {
-            font-weight: bold;
+    p {
+        font-size: 1.7rem;
+        margin-left: 5px;
+        font-weight: 500;
+        color: ${({ theme }) => theme.colors.secondaryColor};
+    }
+
+    .close-buttom-visualizations {
+        color: ${({ theme }) => theme.colors.secondaryColor};
+        position: absolute;
+        cursor: pointer;
+        top: 5px;
+        right: 5px;
+        transition: all ease-in 0.2s;
+
+        &:hover {
+            color: #383838;
         }
     }
 
-    .close-buttom {
-        color: #505859;
+    .delete-buttom {
+        color: ${({ theme }) => theme.colors.secondaryColor};
         position: absolute;
-        top: 2px;
-        right: 2px;
-        font-size: 20px;
-        border-radius: 999px;
+        cursor: pointer;
+        top: 11px;
+        right: 50px;
+        font-size: 18px;
+        transition: all ease-in 0.2s;
 
         &:hover {
-            background-color: #f1f1f1;
+            color: #de1818;
+        }
+    }
+`
+
+export const Ul = styled(animated.ul)<animatedUl>`
+    width: 100%;
+    height: 295px;
+    display: flex;
+    flex-direction: column;
+    ${({ isVisualizationsShow }) => css`
+        ${isVisualizationsShow ? '' : 'display: none;'}
+    `}
+
+    li {
+        width: 100%;
+        height: 60px;
+        padding: 4px 5px;
+        display: flex;
+        border-bottom: 1px solid ${({ theme }) => theme.borderColor.default};
+        background-color: ${({ theme }) => theme.backgroundColors.grey};
+
+        &:first-of-type {
+            border-top: 1px solid ${({ theme }) => theme.borderColor.default};
+        }
+
+        .image-visualizated {
+            display: flex;
+            align-items: center;
+        }
+
+        .image-visualizated img {
+            border-radius: 999px;
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 14px;
+
+            p {
+                margin-left: 0;
+                font-size: 0.98rem;
+            }
+
+            h4 {
+                font-size: 1.2rem;
+            }
         }
     }
 `
