@@ -73,6 +73,7 @@ export const UserInfoContainer = styled.div`
         border-radius: 9999px;
     }
     p {
+        font-weight: bold;
         color: ${({ theme }) => theme.colors.white};
         margin-left: 6px;
         font-size: 1.2rem;
@@ -195,6 +196,7 @@ export const Ul = styled(animated.ul)<animatedUl>`
             p {
                 margin-left: 0;
                 font-size: 0.98rem;
+                font-weight: bold;
             }
 
             h4 {

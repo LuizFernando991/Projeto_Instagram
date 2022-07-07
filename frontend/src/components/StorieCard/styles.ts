@@ -73,6 +73,7 @@ export const InfoContainer = styled.div`
         border-radius: 9999px;
     }
     p {
+        font-weight: bold;
         color: ${({ theme }) => theme.colors.white};
         margin-left: 6px;
         font-size: 1.2rem;

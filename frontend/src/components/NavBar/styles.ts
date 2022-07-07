@@ -12,6 +12,16 @@ export const NavBar = styled.nav`
 `
 export const Notifications = styled.div`
     position: relative;
+
+    .notification-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 999px;
+        background-color: #ea0059;
+        position: absolute;
+        bottom: -2px;
+        right: calc(25% - 2.5px);
+    }
 `
 export const Profile = styled.div`
     position: relative;
