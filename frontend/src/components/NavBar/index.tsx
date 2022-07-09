@@ -10,10 +10,11 @@ import { AuthContext } from '../../contexts/AuthContext'
 import { api } from '../../helpers/api'
 
 export type NavBarProps = {
-    isNewPostOpen?: boolean
+    setIsCreatePostOpen: (isCreatePostOpen: boolean) => void
+    isCreatePostOpen: boolean
 }
 
-export function NavBar({ isNewPostOpen = false }: NavBarProps): ReactElement {
+export function NavBar({ isCreatePostOpen, setIsCreatePostOpen }: NavBarProps): ReactElement {
     const { user } = useContext(AuthContext)
     const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
     const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false)
@@ -107,8 +108,8 @@ export function NavBar({ isNewPostOpen = false }: NavBarProps): ReactElement {
                     )}
                 </a>
             </Link>
-            <div>
-                {isNewPostOpen ? (
+            <div onClick={() => setIsCreatePostOpen(true)}>
+                {isCreatePostOpen ? (
                     <svg
                         aria-label="Nova publicação"
                         color="#262626"

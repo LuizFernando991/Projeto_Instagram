@@ -36,7 +36,7 @@ export default class StorieController {
             const currentDate = new Date()
             const userStories = await Storie.find({$and: [{ postedBy : user._id}, {expiresAt : {$gt : currentDate}}]})
                 .populate("visualizedBy", ["name", "username", "imageProfile"])
-            return res.status(200).json({  storie : userStories})
+            return res.status(200).json({  stories : userStories})
         }catch(err){
             return res.status(500).json({ message : 'internal error'})
         }

@@ -6,7 +6,12 @@ import { TextLogo } from '../TextLogo'
 import { ReactElement } from 'react'
 import * as Styled from './styles'
 
-export function Header(): ReactElement {
+export type HeaderProps = {
+    setIsCreatePostOpen: (isCreatePostOpen: boolean) => void
+    isCreatePostOpen: boolean
+}
+
+export function Header({ isCreatePostOpen, setIsCreatePostOpen }: HeaderProps): ReactElement {
     return (
         <Styled.HeaderContainer>
             <Styled.Header>
@@ -31,7 +36,7 @@ export function Header(): ReactElement {
                 </div>
                 {/* Navbar */}
                 <div>
-                    <NavBar />
+                    <NavBar isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />
                 </div>
             </Styled.Header>
         </Styled.HeaderContainer>

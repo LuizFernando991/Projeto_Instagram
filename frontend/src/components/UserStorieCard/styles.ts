@@ -19,7 +19,7 @@ export type animatedUl = {
 
 export const UserCardContainer = styled.div<Props>`
     width: 400px;
-    height: 80vh;
+    height: 750px;
     position: absolute;
     top: 0;
     bottom: 0;

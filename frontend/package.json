@@ -16,6 +16,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@styled-icons/material-outlined": "^10.28.0",
     "axios": "^0.27.2",
     "next": "^10.0.9",
@@ -23,6 +24,7 @@
     "prop-types": "^15.7.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-easy-crop": "^4.4.0",
     "react-icons": "^4.3.1",
     "react-spring": "^9.0.0-rc.3",
     "styled-components": "^5.2.1"

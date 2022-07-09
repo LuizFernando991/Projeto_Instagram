@@ -6,7 +6,7 @@ export type Props = {
 
 export const CardContainer = styled.li<Props>`
     width: 400px;
-    height: 80vh;
+    height: 750px;
     background-color: #030303;
     border-radius: 8px;
     background-size: cover;
