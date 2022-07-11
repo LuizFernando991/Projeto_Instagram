@@ -20,15 +20,14 @@ export const SliderContainer = styled.div`
 `
 export const ButtonContainer = styled.div`
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute;
+    top: -35px;
+    right: -700px;
 
     button {
-        padding: 10px 10px;
-        color: ${({ theme }) => theme.colors.white};
-        background-color: #0095f6;
+        color: #0095f6;
         border-radius: 8px;
+        font-size: 15px;
         font-weight: bold;
         border: none;
         cursor: pointer;

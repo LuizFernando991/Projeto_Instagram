@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { CreateNewStorie } from '../CreateNewStorie'
+import { CreateNewPost } from '../CreateNewPost'
 import { useTransition } from 'react-spring'
 import { RiCloseLine } from 'react-icons/ri'
 import { UserStoriesType } from '../../pages'
@@ -24,6 +25,7 @@ export function CreatePostComponent({
     })
     const storieInput = useRef(null)
     const [showCreateNewStorie, setShowCreateNewStorie] = useState<boolean>(false)
+    const [showCreateNewPost, setShowCreateNewPost] = useState<boolean>(false)
 
     return (
         <>
@@ -64,7 +66,7 @@ export function CreatePostComponent({
                             <div className="create-post-button-container">
                                 <button onClick={() => setShowCreateNewStorie(true)}>Create Story</button>
                                 <p>or</p>
-                                <button>Create Post</button>
+                                <button onClick={() => setShowCreateNewPost(true)}>Create Post</button>
                             </div>
                         </Styled.ChosePost>
                         {showCreateNewStorie ? (
@@ -75,6 +77,7 @@ export function CreatePostComponent({
                         ) : (
                             ''
                         )}
+                        {showCreateNewPost ? <CreateNewPost setIsCreatePostOpen={setIsCreatePostOpen} /> : ''}
                     </Styled.CreatePost>
                 ) : (
                     ''

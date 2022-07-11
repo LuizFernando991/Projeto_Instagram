@@ -62,7 +62,7 @@ export function CropComponent({ uploadImage, format, handleOnImageCrop }: CropCo
                 />
             </Styled.SliderContainer>
             <Styled.ButtonContainer>
-                <button onClick={cropImage}>Submit</button>
+                <button onClick={cropImage}>Share</button>
             </Styled.ButtonContainer>
         </Styled.CropperContainer>
     )

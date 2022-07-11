@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Header } from '../../components/Header'
 import { HomeAside } from '../../components/HomeAside'
 import { Stories } from '../../components/Stories'
@@ -29,6 +29,17 @@ export function Home({ followingStories, currentUserStories }: HomeProps) {
         )),
     )
     const [allCurrentUserStories, setAllCurrentUserStories] = useState<UserStoriesType>(currentUserStories)
+    const [haveStories, setHaveStories] = useState<boolean>(false)
+
+    console.log(allCurrentUserStories)
+
+    useEffect(() => {
+        if (allCurrentUserStories.stories.length) {
+            setHaveStories(true)
+        } else {
+            setHaveStories(false)
+        }
+    }, [allCurrentUserStories.stories.length])
 
     async function visualizeStories(storieId: VisualizeStories) {
         api.put('/storie/visualizestorie', storieId)
@@ -49,10 +60,7 @@ export function Home({ followingStories, currentUserStories }: HomeProps) {
                 <Styled.Posts>
                     <Stories onStorieClick={onStorieClick} stories={allFollowingStories} />
                 </Styled.Posts>
-                <HomeAside
-                    haveStories={currentUserStories.stories.length ? true : false}
-                    setIsUserStoriesOpen={setIsUserStoriesOpen}
-                />
+                <HomeAside haveStories={haveStories} setIsUserStoriesOpen={setIsUserStoriesOpen} />
             </Styled.Main>
             {isStorieViewOpen ? (
                 <StoriesView

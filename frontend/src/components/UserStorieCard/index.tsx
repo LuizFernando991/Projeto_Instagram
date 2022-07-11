@@ -20,8 +20,8 @@ export function UserStorieCard({ allCurrentUserStories, setIsUserStoriesOpen }: 
     const { user } = useContext(AuthContext)
     const [currentStorie, setCurrentStorie] = useState<number>(0)
     const [isArrowShow, setIsArrowShow] = useState<boolean>(false)
-    const [isVisualizationsShow, setIsVisualizationsShow] = useState<boolean>(false)
-    const transition = useTransition(isVisualizationsShow, {
+    const [isVisualizationsshow, setIsVisualizationsshow] = useState<boolean>(false)
+    const transition = useTransition(isVisualizationsshow, {
         from: { height: 0, opacity: 0 },
         enter: { height: 340, opacity: 1 },
         leave: { height: 0, opacity: 0 },
@@ -49,6 +49,7 @@ export function UserStorieCard({ allCurrentUserStories, setIsUserStoriesOpen }: 
         }
         api.delete('/storie/deletestorie', { data: storieId })
         allCurrentUserStories.stories.splice(currentStorie, 1)
+        setIsVisualizationsshow(false)
         setIsUserStoriesOpen(false)
     }
     return (
@@ -73,21 +74,21 @@ export function UserStorieCard({ allCurrentUserStories, setIsUserStoriesOpen }: 
 
             <BsFillArrowLeftCircleFill className="arrow leftArrow" onClick={handleLeftArrow} />
             <BsFillArrowRightCircleFill className="arrow rightArrow" onClick={handleRightArrow} />
-            <FiMoreVertical className="more" onClick={() => setIsVisualizationsShow(true)} />
+            <FiMoreVertical className="more" onClick={() => setIsVisualizationsshow(true)} />
             {transition((style, item) =>
                 item ? (
-                    <Styled.VisualizatedList style={style} isVisualizationsShow={isVisualizationsShow}>
+                    <Styled.VisualizatedList style={style} isVisualizationsshow={isVisualizationsshow}>
                         <div className="header">
                             <FaRegEye className="eye-icon" />
                             <p>{allCurrentUserStories.stories[currentStorie].visualizedBy.length}</p>
                             <RiCloseLine
                                 className="close-buttom-visualizations"
-                                onClick={() => setIsVisualizationsShow(false)}
+                                onClick={() => setIsVisualizationsshow(false)}
                             />
                             <FaTrash className="delete-buttom" onClick={handleOnDeleteClick} />
                         </div>
                         {allCurrentUserStories.stories.length ? (
-                            <Styled.Ul style={style} isVisualizationsShow={isVisualizationsShow}>
+                            <Styled.Ul style={style} isVisualizationsshow={isVisualizationsshow}>
                                 {allCurrentUserStories.stories[currentStorie].visualizedBy.map((item, index) => (
                                     <li key={index}>
                                         <div className="image-visualizated">
@@ -120,8 +121,8 @@ export function UserStorieCard({ allCurrentUserStories, setIsUserStoriesOpen }: 
                     ''
                 ),
             )}
-            {isVisualizationsShow ? (
-                <Styled.VisualizatedContainer onClick={() => setIsVisualizationsShow(false)} />
+            {isVisualizationsshow ? (
+                <Styled.VisualizatedContainer onClick={() => setIsVisualizationsshow(false)} />
             ) : (
                 ''
             )}

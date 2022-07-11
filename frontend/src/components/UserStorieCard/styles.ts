@@ -8,13 +8,13 @@ export type Props = {
 export type animatedProps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     style: any
-    isVisualizationsShow: boolean
+    isVisualizationsshow: boolean
 }
 
 export type animatedUl = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     style: any
-    isVisualizationsShow: boolean
+    isVisualizationsshow: boolean
 }
 
 export const UserCardContainer = styled.div<Props>`
@@ -117,8 +117,8 @@ export const VisualizatedList = styled(animated.div)<animatedProps>`
         display: flex;
         align-items: center;
         border-bottom: 1px solid ${({ theme }) => theme.borderColor.focus};
-        ${({ isVisualizationsShow }) => css`
-            ${isVisualizationsShow ? '' : 'display: none;'}
+        ${({ isVisualizationsshow }) => css`
+            ${isVisualizationsshow ? '' : 'display: none;'}
         `}
     }
 
@@ -162,8 +162,8 @@ export const Ul = styled(animated.ul)<animatedUl>`
     height: 295px;
     display: flex;
     flex-direction: column;
-    ${({ isVisualizationsShow }) => css`
-        ${isVisualizationsShow ? '' : 'display: none;'}
+    ${({ isVisualizationsshow }) => css`
+        ${isVisualizationsshow ? '' : 'display: none;'}
     `}
 
     li {

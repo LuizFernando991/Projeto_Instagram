@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { AiFillPlusCircle } from 'react-icons/ai'
 import * as Styled from './styles'
