@@ -7,7 +7,7 @@ export type Props = {
 }
 
 export const CreatePostContainer = styled.div`
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     left: 0;
@@ -29,7 +29,7 @@ export const CreatePost = styled(animated.div)<Props>`
     width: 780px;
     height: 700px;
     background-color: #f1f1f1;
-    position: absolute;
+    position: fixed;
     z-index: 10;
     top: 0;
     left: 0;

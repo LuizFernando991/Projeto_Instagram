@@ -58,8 +58,42 @@ export type StoriesType = {
     stories: Array<StorieType>
 }
 
-export default function Index({ followingStories, currentUserStories }: HomeProps) {
-    return <Home followingStories={followingStories} currentUserStories={currentUserStories} />
+export type PostType = {
+    _id: string
+    description?: string
+    images: Array<string>
+    postedBy: {
+        _id: string
+        name: string
+        username: string
+        imageProfile: string
+    }
+    postLikes: Array<{
+        name: string
+        username: string
+        imageProfile: string
+    }>
+    postComments: Array<{
+        text: string
+        _id: string
+        postedBy: {
+            _id: string
+            name: string
+            username: string
+            imageProfile: string
+        }
+        createdAt: Date
+    }>
+    createdAt: Date
+    updatedAt: Date
+}
+
+export type PostsType = {
+    followingPosts: Array<PostType>
+}
+
+export default function Index({ followingStories, currentUserStories, posts }: HomeProps) {
+    return <Home followingStories={followingStories} currentUserStories={currentUserStories} posts={posts} />
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -78,7 +112,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const followingStories = followingStoriesData.data
     const currentUserStoriesData = await api.get('/storie/currentUserStories')
     const currentUserStories = currentUserStoriesData.data
+    const postsData = await api.get('/post/followingposts/?page=1')
+    const posts = postsData.data
     return {
-        props: { followingStories, currentUserStories },
+        props: { followingStories, currentUserStories, posts },
     }
 }

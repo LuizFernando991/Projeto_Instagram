@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Router from 'next/router'
 import { api } from '../../helpers/api'
 import { AuthContext } from '../../contexts/AuthContext'
 import { setCookie } from 'nookies'
@@ -35,6 +36,7 @@ export function Login() {
             api.defaults.headers['Authorization'] = `Bearer ${data.data.token}`
             setUser(data.data.user)
             //route user to home page
+            Router.push('/')
         } catch (err) {
             switch (err.response.data.message) {
                 case 'email is required':

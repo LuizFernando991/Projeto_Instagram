@@ -46,11 +46,15 @@ export function Stories({ stories, onStorieClick }: Stories) {
         <Styled.StoriesContainer isLeftArrowOn={isLeftArrowOn} isRightArrowOn={isRightArrowOn}>
             <BsFillArrowLeftCircleFill className="arrow leftArrow" onClick={handleLeftArrow} />
             <BsFillArrowRightCircleFill className="arrow rightArrow" onClick={handleRightArrow} />
-            <Styled.Stories style={{ marginLeft: `${scrollX}px` }}>
-                {stories.map((item, index: number) => (
-                    <StorieItem onStorieClick={onStorieClick} key={index} index={index} storie={item} />
-                ))}
-            </Styled.Stories>
+            {stories.length ? (
+                <Styled.Stories style={{ marginLeft: `${scrollX}px` }}>
+                    {stories.map((item, index: number) => (
+                        <StorieItem onStorieClick={onStorieClick} key={index} index={index} storie={item} />
+                    ))}
+                </Styled.Stories>
+            ) : (
+                <Styled.NoStoriesContainer>No Stories for now...</Styled.NoStoriesContainer>
+            )}
         </Styled.StoriesContainer>
     )
 }

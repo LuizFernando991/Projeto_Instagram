@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { CalcDate } from '../../helpers/date-calc'
 import { NotificationType } from '../NotificationsDropdown'
 import * as Styled from './styles'
 
@@ -20,21 +21,6 @@ export function NotificationItem({ notification }: NotificationItemProps) {
             message = 'Commented yout post'
             break
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const currentDate: any = new Date()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const notificationDate: any = new Date(notification.createdAt)
-    const time = Math.abs(currentDate - notificationDate) / 1000
-    let timeMessage: string
-    if (time > 60 && time <= 60 * 60) {
-        timeMessage = `${Math.floor(time / 60)}min`
-    } else if (time > 60 * 60 && time <= 60 * 60 * 24) {
-        timeMessage = `${Math.floor(time / (60 * 60))}h`
-    } else if (time > 60 * 60 * 24) {
-        timeMessage = `${Math.floor(time / (60 * 60 * 24))}d`
-    } else {
-        timeMessage = `${time}s`
-    }
 
     return (
         <Styled.NotificationItem>
@@ -54,7 +40,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
             <Styled.InfoContainer>
                 <span>{notification.notificationBy.username} </span>
                 <p>
-                    {message}. <span className="time">{timeMessage}</span>
+                    {message}. <span className="time">{CalcDate(notification.createdAt)}</span>
                 </p>
             </Styled.InfoContainer>
         </Styled.NotificationItem>

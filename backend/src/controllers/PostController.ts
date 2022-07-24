@@ -108,6 +108,9 @@ export default class PostController {
         }
         //return posts
         const followingPosts = await Post.find({ postedBy : {$in: user.following}}, null, { limit : limitPerpage, skip : offset}).sort('-createdAt')
+            .populate("postedBy", ["name", "username", "imageProfile"])
+            .populate("postLikes", ["name", "username", "imageProfile"])
+            .populate("postComments.postedBy", ["name", "username", "imageProfile"])
 
         return res.status(200).json({followingPosts, nextPage : next})
     }
@@ -197,7 +200,8 @@ export default class PostController {
         }
         const comment = {
             text : text,
-            postedBy : user._id
+            postedBy : user._id,
+            createdAt: new Date()
         }
         try{  
             const newPost = await Post.findByIdAndUpdate(postId, {

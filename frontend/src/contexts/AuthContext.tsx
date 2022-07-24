@@ -15,6 +15,12 @@ type User = {
     username: string
     imageProfile: string
     notifications: []
+    following: Array<{
+        imageProfile: string
+        name: string
+        username: string
+        _id: string
+    }>
 }
 
 export const AuthContext = createContext({} as AuthContextType)

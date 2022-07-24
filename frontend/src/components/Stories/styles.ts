@@ -47,3 +47,12 @@ export const Stories = styled.div`
     padding: 0 15px;
     transition: all ease-in 0.2s;
 `
+export const NoStoriesContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #8e8e8e;
+`

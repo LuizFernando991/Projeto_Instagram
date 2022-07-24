@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const UserStoriesContainer = styled.div`
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;

@@ -2,23 +2,26 @@ import { useEffect, useState } from 'react'
 import { Header } from '../../components/Header'
 import { HomeAside } from '../../components/HomeAside'
 import { Stories } from '../../components/Stories'
+import { PostCard } from '../../components/PostCard'
 import { CreatePostComponent } from '../../components/CreatePostComponent'
-import { StoriesType, UserStoriesType, StorieType } from '../../pages'
+import { StoriesType, UserStoriesType, StorieType, PostsType, PostType } from '../../pages'
 import { StoriesView } from '../../components/StoriesView'
 import { UserStoriesView } from '../../components/UserStoriesView'
 import { api } from '../../helpers/api'
 import * as Styled from './styles'
+import { PostComponent } from '../../components/PostComponent'
 
 export type HomeProps = {
     followingStories: StoriesType
     currentUserStories: UserStoriesType
+    posts: PostsType
 }
 
 export type VisualizeStories = {
     storieId: string
 }
 
-export function Home({ followingStories, currentUserStories }: HomeProps) {
+export function Home({ followingStories, currentUserStories, posts }: HomeProps) {
     const [isStorieViewOpen, setIsStorieViewOpen] = useState<boolean>(false)
     const [isUserStoriesOpen, setIsUserStoriesOpen] = useState<boolean>(false)
     const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false)
@@ -30,8 +33,10 @@ export function Home({ followingStories, currentUserStories }: HomeProps) {
     )
     const [allCurrentUserStories, setAllCurrentUserStories] = useState<UserStoriesType>(currentUserStories)
     const [haveStories, setHaveStories] = useState<boolean>(false)
-
-    console.log(allCurrentUserStories)
+    const [currentPosts] = useState<Array<PostType>>(posts.followingPosts)
+    const [selectedPost, setSelectedPost] = useState<null | PostType>(null)
+    const [isPostOpen, setIsPostOpen] = useState<boolean>(false)
+    const [overflow, setOverFlow] = useState<boolean>(true)
 
     useEffect(() => {
         if (allCurrentUserStories.stories.length) {
@@ -40,6 +45,14 @@ export function Home({ followingStories, currentUserStories }: HomeProps) {
             setHaveStories(false)
         }
     }, [allCurrentUserStories.stories.length])
+
+    useEffect(() => {
+        if (isStorieViewOpen || isUserStoriesOpen || isCreatePostOpen || isPostOpen) {
+            setOverFlow(false)
+        } else {
+            setOverFlow(true)
+        }
+    }, [isCreatePostOpen, isPostOpen, isStorieViewOpen, isUserStoriesOpen])
 
     async function visualizeStories(storieId: VisualizeStories) {
         api.put('/storie/visualizestorie', storieId)
@@ -53,12 +66,24 @@ export function Home({ followingStories, currentUserStories }: HomeProps) {
         return
     }
 
+    function onCommentButtonClick(post: PostType) {
+        setIsPostOpen(true)
+        setSelectedPost(post)
+    }
+
     return (
-        <>
+        <Styled.HomeContainer overflow={overflow}>
             <Header setIsCreatePostOpen={setIsCreatePostOpen} isCreatePostOpen={isCreatePostOpen} />
             <Styled.Main>
                 <Styled.Posts>
                     <Stories onStorieClick={onStorieClick} stories={allFollowingStories} />
+                    <Styled.PostsColl>
+                        {currentPosts.length
+                            ? currentPosts.map((post) => (
+                                  <PostCard key={post._id} post={post} onCommentButtonClick={onCommentButtonClick} />
+                              ))
+                            : ''}
+                    </Styled.PostsColl>
                 </Styled.Posts>
                 <HomeAside haveStories={haveStories} setIsUserStoriesOpen={setIsUserStoriesOpen} />
             </Styled.Main>
@@ -91,6 +116,11 @@ export function Home({ followingStories, currentUserStories }: HomeProps) {
             ) : (
                 ''
             )}
-        </>
+            {isPostOpen ? (
+                <PostComponent post={selectedPost} setIsPostOpen={setIsPostOpen} isPostOpen={isPostOpen} />
+            ) : (
+                ''
+            )}
+        </Styled.HomeContainer>
     )
 }
