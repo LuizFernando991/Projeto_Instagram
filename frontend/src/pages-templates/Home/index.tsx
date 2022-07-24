@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { api } from '../../helpers/api'
 import { Header } from '../../components/Header'
 import { HomeAside } from '../../components/HomeAside'
 import { Stories } from '../../components/Stories'
@@ -7,9 +8,9 @@ import { CreatePostComponent } from '../../components/CreatePostComponent'
 import { StoriesType, UserStoriesType, StorieType, PostsType, PostType } from '../../pages'
 import { StoriesView } from '../../components/StoriesView'
 import { UserStoriesView } from '../../components/UserStoriesView'
-import { api } from '../../helpers/api'
-import * as Styled from './styles'
 import { PostComponent } from '../../components/PostComponent'
+import { InfiniteScroll } from '../../components/InfiniteScroll'
+import * as Styled from './styles'
 
 export type HomeProps = {
     followingStories: StoriesType
@@ -33,7 +34,9 @@ export function Home({ followingStories, currentUserStories, posts }: HomeProps)
     )
     const [allCurrentUserStories, setAllCurrentUserStories] = useState<UserStoriesType>(currentUserStories)
     const [haveStories, setHaveStories] = useState<boolean>(false)
-    const [currentPosts] = useState<Array<PostType>>(posts.followingPosts)
+    const [currentPostPage, setCurrentPostPage] = useState<number>(1)
+    const [currentPosts, setCurrentPosts] = useState<Array<PostType>>(posts.followingPosts)
+    const [haveMorePosts, setHaveMorePosts] = useState<boolean>(posts.nextPage)
     const [selectedPost, setSelectedPost] = useState<null | PostType>(null)
     const [isPostOpen, setIsPostOpen] = useState<boolean>(false)
     const [overflow, setOverFlow] = useState<boolean>(true)
@@ -54,7 +57,17 @@ export function Home({ followingStories, currentUserStories, posts }: HomeProps)
         }
     }, [isCreatePostOpen, isPostOpen, isStorieViewOpen, isUserStoriesOpen])
 
-    async function visualizeStories(storieId: VisualizeStories) {
+    async function getMorePosts() {
+        if (haveMorePosts) {
+            api.get(`http://localhost:5050/post/followingposts/?page=${currentPostPage + 1}`).then((response) => {
+                setCurrentPosts((e) => [...e, ...response.data.followingPosts])
+                setHaveMorePosts(response.data.nextPage)
+            })
+            setCurrentPostPage((e) => e + 1)
+        }
+    }
+
+    function visualizeStories(storieId: VisualizeStories) {
         api.put('/storie/visualizestorie', storieId)
         const newStorie = { ...allFollowingStories[currentStorie], isAllVisualized: true }
         allFollowingStories[currentStorie] = newStorie
@@ -78,8 +91,8 @@ export function Home({ followingStories, currentUserStories, posts }: HomeProps)
                 <Styled.Posts>
                     <Stories onStorieClick={onStorieClick} stories={allFollowingStories} />
                     <Styled.PostsColl>
-                        {currentPosts.length
-                            ? currentPosts.map((post) => (
+                        {currentPosts?.length
+                            ? currentPosts?.map((post) => (
                                   <PostCard key={post._id} post={post} onCommentButtonClick={onCommentButtonClick} />
                               ))
                             : ''}
@@ -121,6 +134,7 @@ export function Home({ followingStories, currentUserStories, posts }: HomeProps)
             ) : (
                 ''
             )}
+            {currentPosts.length ? <InfiniteScroll getMorePosts={getMorePosts} /> : ''}
         </Styled.HomeContainer>
     )
 }

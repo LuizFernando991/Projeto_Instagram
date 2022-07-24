@@ -90,6 +90,7 @@ export type PostType = {
 
 export type PostsType = {
     followingPosts: Array<PostType>
+    nextPage: boolean
 }
 
 export default function Index({ followingStories, currentUserStories, posts }: HomeProps) {
