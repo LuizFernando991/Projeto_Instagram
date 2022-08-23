@@ -49,7 +49,8 @@ export default class PostController {
         }
         
         try{
-            const allPosts = await Post.find({postedBy : userId }).populate("postedBy", ["name", "username", "imageProfile"])
+            const allPosts = await Post.find({postedBy : userId })
+                .populate("postedBy", ["name", "username", "imageProfile"])
                 .populate("postLikes", ["name", "username", "imageProfile"])
                 .populate("postComments.postedBy", ["name", "username", "imageProfile"]) //postcomments
             return res.status(200).json({allPosts})

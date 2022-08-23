@@ -52,7 +52,7 @@ export default class UserController {
             return res.status(422).json({message : 'user not found'})
         }
         //Check password
-        const checkPassword = bcrypt.compare(password, user.password)
+        const checkPassword = await bcrypt.compare(password, user.password)
         if(!checkPassword){
             return res.status(422).json({message : 'wrong password'})
         }
@@ -74,7 +74,7 @@ export default class UserController {
 
     public static async getUserByUsername(req: Request, res: Response) : Promise<Response> {
         const username: string = req.params.username
-        const user = await User.findOne({ username : username }).select('-password -email -createdAt -updateAt -notifications')
+        const user = await User.findOne({ username : username }).select('-password -email -createdAt -updatedAt -notifications')
             .populate("followers", ["username", "name", "imageProfile"])
             .populate("following", ["username", "name", "imageProfile"])
 

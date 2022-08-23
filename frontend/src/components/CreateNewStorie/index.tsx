@@ -7,7 +7,7 @@ import * as Styled from './styles'
 
 export type CreateNewStorieProps = {
     setIsCreatePostOpen: (isCreatePostOpen: boolean) => void
-    setAllCurrentUserStories: (allCurrentUserStories: UserStoriesType) => void
+    setAllCurrentUserStories?: (allCurrentUserStories: UserStoriesType) => void
 }
 
 export function CreateNewStorie({ setIsCreatePostOpen, setAllCurrentUserStories }: CreateNewStorieProps) {
@@ -27,7 +27,9 @@ export function CreateNewStorie({ setIsCreatePostOpen, setAllCurrentUserStories 
         }
         formData.append('image', editedImage)
         const response = await api.post('/storie/createstorie', formData)
-        setAllCurrentUserStories(response.data)
+        if (setAllCurrentUserStories) {
+            setAllCurrentUserStories(response.data)
+        }
         setIsCreatePostOpen(false)
     }
 

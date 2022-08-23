@@ -25,7 +25,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-easy-crop": "^4.4.0",
-    "react-icons": "^4.3.1",
+    "react-icons": "^4.4.0",
     "react-spring": "^9.0.0-rc.3",
     "styled-components": "^5.2.1"
   },

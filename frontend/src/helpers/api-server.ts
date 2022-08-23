@@ -1,7 +1,9 @@
 import axios from 'axios'
+import { GetServerSidePropsContext } from 'next'
 import { parseCookies } from 'nookies'
+import { ParsedUrlQuery } from 'querystring'
 
-export function getAPIClient(ctx?: any) {
+export function getAPIClient(ctx?: GetServerSidePropsContext<ParsedUrlQuery>) {
     const { 'instagram-token': token } = parseCookies(ctx)
 
     const api = axios.create({

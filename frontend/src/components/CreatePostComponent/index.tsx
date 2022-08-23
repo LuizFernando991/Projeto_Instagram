@@ -8,7 +8,7 @@ import * as Styled from './styles'
 
 export type CreatePostComponentProps = {
     setIsCreatePostOpen: (isCreatePostOpen: boolean) => void
-    setAllCurrentUserStories: (allCurrentUserStories: UserStoriesType) => void
+    setAllCurrentUserStories?: (allCurrentUserStories: UserStoriesType) => void
     isCreatePostOpen: boolean
 }
 

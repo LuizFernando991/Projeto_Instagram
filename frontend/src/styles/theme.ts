@@ -5,10 +5,12 @@ export const theme = {
         softGrey: '#8a8a8a',
         white: '#fff',
         blue: '#0095f6',
+        black: '#262626',
     },
     backgroundColors: {
         grey: '#FAFAFA',
         white: '#FFF',
+        blue: '#0095f6',
     },
     borderColor: {
         default: 'rgba(219, 219, 219, 0.9)',
