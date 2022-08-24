@@ -145,22 +145,28 @@ export function PostComponent({ post, isPostOpen, setIsPostOpen }: PostComponent
                                     />
                                 ))}
                             </div>
-                            <BsFillArrowLeftCircleFill
-                                className="post-arrow post-leftArrow"
-                                onClick={handleLeftArrowClick}
-                            />
-                            <BsFillArrowRightCircleFill
-                                className="post-arrow post-rightArrow"
-                                onClick={handleRightArrowClick}
-                            />
-                            <Styled.Points>
-                                {post.images.map((post, index) => (
-                                    <Styled.Dot
-                                        isSelected={index === currentSliderImage ? true : false}
-                                        key={index}
-                                    ></Styled.Dot>
-                                ))}
-                            </Styled.Points>
+                            {post.images.length > 1 ? (
+                                <>
+                                    <BsFillArrowLeftCircleFill
+                                        className="post-arrow post-leftArrow"
+                                        onClick={handleLeftArrowClick}
+                                    />
+                                    <BsFillArrowRightCircleFill
+                                        className="post-arrow post-rightArrow"
+                                        onClick={handleRightArrowClick}
+                                    />
+                                    <Styled.Points>
+                                        {post.images.map((post, index) => (
+                                            <Styled.Dot
+                                                isSelected={index === currentSliderImage ? true : false}
+                                                key={index}
+                                            ></Styled.Dot>
+                                        ))}
+                                    </Styled.Points>
+                                </>
+                            ) : (
+                                ''
+                            )}
                         </Styled.ImagesContainer>
                         <Styled.PostInfoContainer>
                             <Styled.PostHeader>

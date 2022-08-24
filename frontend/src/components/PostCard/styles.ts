@@ -1,9 +1,5 @@
 import styled, { css } from 'styled-components'
 
-export type Props = {
-    isArrowShow: boolean
-}
-
 export type PropsDot = {
     isSelected: boolean
 }
@@ -37,7 +33,7 @@ export const UserInfo = styled.div`
         }
     }
 `
-export const ImagesContainer = styled.div<Props>`
+export const ImagesContainer = styled.div`
     width: 100%;
     height: 500px;
     overflow: hidden;
@@ -55,9 +51,6 @@ export const ImagesContainer = styled.div<Props>`
         font-size: 25px;
         transition: all ease 0.4s;
         cursor: pointer;
-        ${({ isArrowShow }) => css`
-            ${isArrowShow ? '' : 'display: none;'}
-        `}
         &:hover {
             color: ${({ theme }) => theme.colors.white};
         }

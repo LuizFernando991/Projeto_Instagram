@@ -18,7 +18,6 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
     const [numberOfLikes, setNumberOfLikes] = useState<number>(post.postLikes.length)
     const [inputComment, setInputComment] = useState<null | string>('')
     const [userComment, setUserComment] = useState<null | Array<string>>([])
-    const [isArrowShow, setIsArrowShow] = useState<boolean>(false)
 
     useEffect(() => {
         post.postLikes.map((like) => {
@@ -35,12 +34,6 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
             }
         })
     }, [post.postComments, user])
-
-    useEffect(() => {
-        if (post.images.length) {
-            setIsArrowShow(true)
-        }
-    }, [post.images.length])
 
     function handleLeftArrowClick() {
         if (currentSliderImage > 0) {
@@ -103,7 +96,7 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
                     <p>{post.postedBy.name}</p>
                 </div>
             </Styled.UserInfo>
-            <Styled.ImagesContainer isArrowShow={isArrowShow}>
+            <Styled.ImagesContainer>
                 <div className="slider" style={{ marginLeft: -(currentSliderImage * 500) }}>
                     {post.images.map((image, index) => (
                         <img
@@ -114,8 +107,14 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
                         />
                     ))}
                 </div>
-                <BsFillArrowLeftCircleFill className="arrow leftArrow" onClick={handleLeftArrowClick} />
-                <BsFillArrowRightCircleFill className="arrow rightArrow" onClick={handleRightArrowClick} />
+                {post.images.length > 1 ? (
+                    <>
+                        <BsFillArrowLeftCircleFill className="arrow leftArrow" onClick={handleLeftArrowClick} />
+                        <BsFillArrowRightCircleFill className="arrow rightArrow" onClick={handleRightArrowClick} />
+                    </>
+                ) : (
+                    ''
+                )}
             </Styled.ImagesContainer>
             <Styled.Options>
                 <div className="buttons">
@@ -167,11 +166,18 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
                         ></path>
                     </svg>
                 </div>
-                <Styled.Points>
-                    {post.images.map((post, index) => (
-                        <Styled.Dot isSelected={index === currentSliderImage ? true : false} key={index}></Styled.Dot>
-                    ))}
-                </Styled.Points>
+                {post.images.length > 1 ? (
+                    <Styled.Points>
+                        {post.images.map((post, index) => (
+                            <Styled.Dot
+                                isSelected={index === currentSliderImage ? true : false}
+                                key={index}
+                            ></Styled.Dot>
+                        ))}
+                    </Styled.Points>
+                ) : (
+                    ''
+                )}
             </Styled.Options>
             <Styled.PostInfoContainer>
                 <h4>
