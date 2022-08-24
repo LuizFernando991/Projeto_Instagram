@@ -37,7 +37,6 @@ export function CreateNewPost({ setIsCreatePostOpen }: CreateNewPostProps) {
     function handleOnCropImage(cropedImage: File) {
         setAllImage((e) => [...e, cropedImage])
         setUploadImageInput(null)
-        console.log(allImages)
     }
 
     function handleLeftArrowClick() {

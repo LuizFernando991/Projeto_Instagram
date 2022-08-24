@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { PostsType, PostType, UserType } from '../../pages/[username]'
 import { Header } from '../../components/Header'
@@ -22,6 +23,7 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
     const [isPostOpen, setIsPostOpen] = useState<boolean>(false)
     const [userFollow, setUserFollow] = useState<boolean>(false)
     const [selectedPost, setSelectedPost] = useState<PostType | null>(null)
+    const router = useRouter()
 
     useEffect(() => {
         profileUser?.followers.map((follow) => {
@@ -44,6 +46,10 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
     function handleOnPreviewImageClick(postIndex) {
         setSelectedPost(userPosts.allPosts[postIndex])
         setIsPostOpen(true)
+    }
+
+    function handleOnEditButtonClick() {
+        router.push('/edit')
     }
 
     return (
@@ -71,7 +77,9 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
                         <Styled.InfoHeader>
                             <h2>{profileUser?.username}</h2>
                             {user?._id === profileUser?._id ? (
-                                <button className="editButton">Edit Profile</button>
+                                <button className="editButton" onClick={handleOnEditButtonClick}>
+                                    Edit Profile
+                                </button>
                             ) : userFollow ? (
                                 <button className="followingButton" onClick={handleOnFollowingButtonClick}>
                                     Following

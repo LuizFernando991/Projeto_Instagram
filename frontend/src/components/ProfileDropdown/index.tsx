@@ -1,4 +1,8 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { AuthContext } from '../../contexts/AuthContext'
+import { destroyCookie } from 'nookies'
 import * as Styled from './styles'
 
 export type ProfileDropdownProps = {
@@ -7,13 +11,23 @@ export type ProfileDropdownProps = {
 }
 
 export function ProfileDropdown({ isOpen, setIsProfileOpen }: ProfileDropdownProps) {
+    const { user, setUser } = useContext(AuthContext)
+    const router = useRouter()
+
+    function logOut() {
+        setUser(null)
+        destroyCookie(null, 'instagram-token', {
+            path: '/',
+        })
+        router.push('/login')
+    }
     return (
         <>
             <Styled.DropdownContainer isOpen={isOpen}>
                 <Styled.Arrow />
                 <ul>
                     <li>
-                        <Link href="#">
+                        <Link href={`/${user?.username}`}>
                             <a>
                                 <svg
                                     aria-label="Perfil"
@@ -58,7 +72,7 @@ export function ProfileDropdown({ isOpen, setIsProfileOpen }: ProfileDropdownPro
                         </Link>
                     </li>
                     <li>
-                        <Link href="">
+                        <Link href="/edit">
                             <a>
                                 <svg
                                     aria-label="Configurações"
@@ -92,7 +106,7 @@ export function ProfileDropdown({ isOpen, setIsProfileOpen }: ProfileDropdownPro
                         </Link>
                     </li>
                 </ul>
-                <div className="log-out">
+                <div className="log-out" onClick={logOut}>
                     <p>Log out</p>
                 </div>
             </Styled.DropdownContainer>
