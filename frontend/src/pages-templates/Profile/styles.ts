@@ -107,3 +107,25 @@ export const PostsContainer = styled.section`
         }
     }
 `
+export const NoPostContainer = styled.section`
+    font-size: 50px;
+    color: ${({ theme }) => theme.colors.black};
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 40px;
+
+    h1 {
+        font-weight: 300;
+        font-size: 28px;
+        line-height: 32px;
+        margin-top: 20px;
+    }
+
+    svg {
+        padding: 5px;
+        border: 2px solid ${({ theme }) => theme.colors.black};
+        border-radius: 999px;
+    }
+`

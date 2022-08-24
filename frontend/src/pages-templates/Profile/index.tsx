@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import { PostsType, PostType, UserType } from '../../pages/[username]'
 import { Header } from '../../components/Header'
 import { CreatePostComponent } from '../../components/CreatePostComponent'
+import { MdOutlineNoPhotography } from 'react-icons/md'
 import { SeparateLine } from '../../components/SeparateLine'
 import { AuthContext } from '../../contexts/AuthContext'
 import { ProfilePostImage } from '../../components/ProfilePostImage'
@@ -99,17 +100,24 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
                 </Styled.UserInfoContainer>
                 <SeparateLine />
                 <Styled.PostsContainer>
-                    <ul>
-                        {userPosts.allPosts.map((post, index) => (
-                            <li key={index}>
-                                <ProfilePostImage
-                                    post={post}
-                                    handleOnPreviewImageClick={handleOnPreviewImageClick}
-                                    index={index}
-                                />
-                            </li>
-                        ))}
-                    </ul>
+                    {userPosts.allPosts.length > 0 ? (
+                        <ul>
+                            {userPosts.allPosts.map((post, index) => (
+                                <li key={index}>
+                                    <ProfilePostImage
+                                        post={post}
+                                        handleOnPreviewImageClick={handleOnPreviewImageClick}
+                                        index={index}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <Styled.NoPostContainer>
+                            <MdOutlineNoPhotography />
+                            <h1>No Posts Yet</h1>
+                        </Styled.NoPostContainer>
+                    )}
                 </Styled.PostsContainer>
             </Styled.Main>
             {isPostOpen ? (
