@@ -23,7 +23,7 @@ export function EditPage() {
     async function handleOnSubmit(event: React.FormEvent) {
         event.preventDefault()
         if (!passwordForm || !passwordForm.password || !passwordForm.confirmPassword || !passwordForm.lastPassword) {
-            setErrorMessage('Fill all filds bedore ')
+            setErrorMessage('Fill all filds before ')
             return
         }
         if (passwordForm.password !== passwordForm.confirmPassword) {

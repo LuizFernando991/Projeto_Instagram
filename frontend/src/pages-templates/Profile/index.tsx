@@ -63,7 +63,7 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
             <Styled.Main>
                 <Styled.UserInfoContainer>
                     <Styled.ProfileImage>
-                        {user?.imageProfile ? (
+                        {profileUser?.imageProfile ? (
                             <Image
                                 width="150"
                                 height="150"
