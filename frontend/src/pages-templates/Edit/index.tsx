@@ -2,7 +2,7 @@ import * as Styled from './styles'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Header } from '../../components/Header'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { api } from '../../helpers/api'
 
@@ -12,16 +12,27 @@ export type PasswordFormType = {
     confirmPassword: string
 }
 
+export type UserFormType = {
+    name: string
+    username: string
+    email: string
+}
+
 export function EditPage() {
     const { user, setUser } = useContext(AuthContext)
     const [passwordForm, setPasswordForm] = useState<PasswordFormType | null>(null)
+    const [userForm, setUserForm] = useState<null | UserFormType>()
     const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false)
     const [page, setPage] = useState<number>(0)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [previewImage, setPreviewImage] = useState<File | null>(null)
     const router = useRouter()
 
-    async function handleOnSubmit(event: React.FormEvent) {
+    useEffect(() => {
+        setUserForm({ name: user?.name, username: user?.username, email: user?.email })
+    }, [user])
+
+    async function handleOnPasswordSubmit(event: React.FormEvent) {
         event.preventDefault()
         if (!passwordForm || !passwordForm.password || !passwordForm.confirmPassword || !passwordForm.lastPassword) {
             setErrorMessage('Fill all filds before ')
@@ -41,8 +52,35 @@ export function EditPage() {
         }
     }
 
-    function handleOnInputChange(event: { target: HTMLInputElement }): void {
+    async function handleOnUserSubmit(event: React.FormEvent) {
+        event.preventDefault()
+        if (!userForm.email || !userForm.name || !userForm.username) {
+            setErrorMessage('Fill all filds before ')
+            return
+        }
+        try {
+            api.put('user/edituser', userForm)
+                .then((r) =>
+                    setUser({
+                        ...user,
+                        username: r.data.newUser.username,
+                        name: r.data.newUser.name,
+                        email: r.data.newUser.email,
+                    }),
+                )
+                .then(() => router.push('/'))
+        } catch (err) {
+            setErrorMessage('An error occurred, please try later')
+            return
+        }
+    }
+
+    function handleOnPasswordInputChange(event: { target: HTMLInputElement }): void {
         setPasswordForm({ ...passwordForm, [event.target.name]: event.target.value })
+    }
+
+    function handleOnUserInfoInputChange(event: { target: HTMLInputElement }): void {
+        setUserForm({ ...userForm, [event.target.name]: event.target.value })
     }
 
     function handleOnImagePreviewChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -59,7 +97,6 @@ export function EditPage() {
             },
         }).then((r) => setUser({ ...user, imageProfile: r.data.newUser.imageProfile }))
     }
-
     return (
         <Styled.EditPageContainer>
             <Header isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />
@@ -78,22 +115,67 @@ export function EditPage() {
                     {page === 0 ? (
                         <Styled.UserInfoContainer>
                             <Styled.ChangeImageContainer>
-                                {previewImage ? (
-                                    <img width="35" height="35" src={URL.createObjectURL(previewImage)} />
-                                ) : user?.imageProfile ? (
-                                    <img
-                                        width="35"
-                                        height="35"
-                                        src={`http://localhost:5050/images/profileImages/${user?.imageProfile}`}
-                                    />
-                                ) : (
-                                    <img width="35" height="35" src="/assets/images/defaultImageProfile.jpg" />
-                                )}
-
-                                <h2>{user?.username}</h2>
-                                <label htmlFor="image">Change profile image</label>
-                                <input onChange={handleOnImagePreviewChange} id="image" name="image" type="file" />
+                                <div className="imageContainer">
+                                    {previewImage ? (
+                                        <img width="45" height="45" src={URL.createObjectURL(previewImage)} />
+                                    ) : user?.imageProfile ? (
+                                        <img
+                                            width="45"
+                                            height="45"
+                                            src={`http://localhost:5050/images/profileImages/${user?.imageProfile}`}
+                                        />
+                                    ) : (
+                                        <img width="45" height="45" src="/assets/images/defaultImageProfile.jpg" />
+                                    )}
+                                </div>
+                                <div>
+                                    <h2>{user?.username}</h2>
+                                    <label htmlFor="image">Change profile image</label>
+                                    <input onChange={handleOnImagePreviewChange} id="image" name="image" type="file" />
+                                </div>
                             </Styled.ChangeImageContainer>
+                            <Styled.InfoForm onSubmit={handleOnUserSubmit}>
+                                <div>
+                                    <aside>
+                                        <label htmlFor="name">Name</label>
+                                    </aside>
+                                    <input
+                                        id="name"
+                                        name="name"
+                                        type="text"
+                                        onChange={handleOnUserInfoInputChange}
+                                        value={userForm?.name || ''}
+                                    />
+                                </div>
+                                <div>
+                                    <aside>
+                                        <label htmlFor="username">Usename</label>
+                                    </aside>
+                                    <input
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        onChange={handleOnUserInfoInputChange}
+                                        value={userForm?.username || ''}
+                                    />
+                                </div>
+                                <div>
+                                    <aside>
+                                        <label htmlFor="email">Email</label>
+                                    </aside>
+                                    <input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        onChange={handleOnUserInfoInputChange}
+                                        value={userForm?.email || ''}
+                                    />
+                                </div>
+                                <div>
+                                    <input type="submit" value="Send" />
+                                </div>
+                                {errorMessage ? <p className="erroMessage">{errorMessage}</p> : ''}
+                            </Styled.InfoForm>
                         </Styled.UserInfoContainer>
                     ) : (
                         <Styled.PasswordContainer>
@@ -117,7 +199,7 @@ export function EditPage() {
                                 </div>
                                 <h2>{user?.username}</h2>
                             </Styled.ImagePasswordPageContainer>
-                            <Styled.PasswordForm onSubmit={handleOnSubmit}>
+                            <Styled.PasswordForm onSubmit={handleOnPasswordSubmit}>
                                 <div>
                                     <aside>
                                         <label htmlFor="lastPassword">Current Password</label>
@@ -126,7 +208,7 @@ export function EditPage() {
                                         id="lastPassword"
                                         name="lastPassword"
                                         type="password"
-                                        onChange={handleOnInputChange}
+                                        onChange={handleOnPasswordInputChange}
                                     />
                                 </div>
                                 <div>
@@ -137,7 +219,7 @@ export function EditPage() {
                                         id="password"
                                         name="password"
                                         type="password"
-                                        onChange={handleOnInputChange}
+                                        onChange={handleOnPasswordInputChange}
                                     />
                                 </div>
                                 <div>
@@ -148,7 +230,7 @@ export function EditPage() {
                                         id="confirmPassword"
                                         name="confirmPassword"
                                         type="password"
-                                        onChange={handleOnInputChange}
+                                        onChange={handleOnPasswordInputChange}
                                     />
                                 </div>
                                 <div>

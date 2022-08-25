@@ -168,7 +168,7 @@ export default class UserController {
             return res.status(422).json({message : 'username already used'})
         }
         try{
-            const newUser = await User.findOneAndUpdate({ _id : user.id}, {name, username, email}, {new : true}).select('-password -email')
+            const newUser = await User.findOneAndUpdate({ _id : user.id}, {name, username, email}, {new : true}).select('-password')
                 .populate("followers", ["username", "name", "imageProfile"])
                 .populate("following", ["username", "name", "imageProfile"])
             return res.status(200).json({ newUser })

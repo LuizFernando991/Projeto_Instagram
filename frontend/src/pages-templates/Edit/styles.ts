@@ -50,6 +50,13 @@ export const EditInfo = styled.div`
     width: 80%;
     display: flex;
     justify-content: center;
+
+    .erroMessage {
+        font-size: 14px;
+        color: red;
+        line-height: 20px;
+        margin-left: 150px;
+    }
 `
 
 export const PasswordContainer = styled.div`
@@ -133,6 +140,90 @@ export const PasswordForm = styled.form`
         }
     }
 `
-export const UserInfoContainer = styled.div``
 
-export const ChangeImageContainer = styled.div``
+export const UserInfoContainer = styled.div`
+    width: 80%;
+`
+
+export const ChangeImageContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .imageContainer {
+        width: 120px;
+        display: flex;
+        justify-content: right;
+        margin-right: 30px;
+
+        img {
+            border-radius: 999px;
+        }
+    }
+
+    h2 {
+        font-size: 20px;
+        font-weight: normal;
+        line-height: 22px;
+        margin-bottom: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: 600;
+        text-overflow: ellipsis;
+        color: ${({ theme }) => theme.colors.blue};
+        cursor: pointer;
+    }
+
+    input {
+        visibility: hidden;
+    }
+`
+
+export const InfoForm = styled.form`
+    margin-top: 30px;
+    div {
+        display: flex;
+        margin-bottom: 20px;
+        aside {
+            width: 120px;
+            text-align: right;
+            margin-right: 30px;
+
+            label {
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 18px;
+            }
+        }
+    }
+
+    input {
+        border: 1px solid ${({ theme }) => theme.borderColor.focus};
+        border-radius: 3px;
+        box-sizing: border-box;
+        color: ${({ theme }) => theme.colors.black};
+        flex: 0 1 355px;
+        font-size: 16px;
+        height: 32px;
+        padding: 0 10px;
+        width: 100%;
+    }
+
+    input[type='submit'] {
+        margin-left: 150px;
+        width: 20px;
+        border: 1px solid transparent;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 5px 9px;
+        background-color: ${({ theme }) => theme.backgroundColors.blue};
+        cursor: pointer;
+    }
+`
