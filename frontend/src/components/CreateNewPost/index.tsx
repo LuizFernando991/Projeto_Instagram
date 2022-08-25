@@ -53,7 +53,9 @@ export function CreateNewPost({ setIsCreatePostOpen }: CreateNewPostProps) {
 
     async function handleOnSubmit() {
         const formData = new FormData()
-        formData.append('description', description)
+        if (description) {
+            formData.append('description', description)
+        }
         allImages.forEach((image) => {
             formData.append('images', image)
         })

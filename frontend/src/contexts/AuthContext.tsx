@@ -14,7 +14,17 @@ type User = {
     email: string
     username: string
     imageProfile: string
-    notifications: []
+    notifications: Array<{
+        notificationType: string
+        createdAt: Date
+        notificationBy: {
+            _id: string
+            name: string
+            username: string
+            imageProfile: string
+        }
+        _id: string
+    }>
     following: Array<{
         imageProfile: string
         name: string

@@ -80,6 +80,7 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
         }
     }
 
+    console.log(post)
     return (
         <Styled.CardContainer>
             <Styled.UserInfo>

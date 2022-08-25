@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import * as Styled from './styles'
 
@@ -15,13 +14,13 @@ export function ProfileItem({ key = '', imageProfile, name, username }: ProfileI
             <Link href={`/${username}`}>
                 <a>
                     {imageProfile ? (
-                        <Image
+                        <img
                             width="44"
                             height="44"
                             src={`http://localhost:5050/images/profileImages/${imageProfile}`}
                         />
                     ) : (
-                        <Image width="44" height="44" src="/assets/images/defaultImageProfile.jpg" />
+                        <img width="44" height="44" src="/assets/images/defaultImageProfile.jpg" />
                     )}
                     <Styled.InfoContainer>
                         <h4>{username}</h4>

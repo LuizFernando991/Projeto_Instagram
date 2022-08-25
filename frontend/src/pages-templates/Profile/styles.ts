@@ -24,12 +24,12 @@ export const ProfileImage = styled.div`
 
 export const Info = styled.div`
     margin-left: 120px;
-    width: 300px;
+    min-width: 300px;
 `
 
 export const InfoHeader = styled.div`
     display: flex;
-
+    width: auto;
     h2 {
         font-weight: 300;
         font-size: 28px;

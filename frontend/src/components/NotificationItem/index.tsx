@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { CalcDate } from '../../helpers/date-calc'
 import { NotificationType } from '../NotificationsDropdown'
@@ -22,18 +21,20 @@ export function NotificationItem({ notification }: NotificationItemProps) {
             break
     }
 
+    console.log(notification)
+
     return (
         <Styled.NotificationItem>
             <Link href="#">
                 <a>
                     {notification.notificationBy.imageProfile ? (
-                        <Image
+                        <img
                             width="44"
                             height="44"
                             src={`http://localhost:5050/images/profileImages/${notification.notificationBy.imageProfile}`}
                         />
                     ) : (
-                        <Image width="44" height="44" src="/assets/images/defaultImageProfile.jpg" />
+                        <img width="44" height="44" src="/assets/images/defaultImageProfile.jpg" />
                     )}
                 </a>
             </Link>

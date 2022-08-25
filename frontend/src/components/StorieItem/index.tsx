@@ -27,13 +27,13 @@ export function StorieItem({ storie, index, onStorieClick }: StorieItemProps) {
         <Styled.StorieItem onClick={handleOnImageClick} isVisualizate={isVisualizated}>
             <div>
                 {storie.postedBy.imageProfile ? (
-                    <Image
+                    <img
                         width="62.3"
                         height="62.3"
                         src={`http://localhost:5050/images/profileImages/${storie.postedBy.imageProfile}`}
                     />
                 ) : (
-                    <Image width="62.3" height="62.3" src="/assets/images/defaultImageProfile.jpg" />
+                    <img width="62.3" height="62.3" src="/assets/images/defaultImageProfile.jpg" />
                 )}
             </div>
             <p>{storie.postedBy.username}</p>

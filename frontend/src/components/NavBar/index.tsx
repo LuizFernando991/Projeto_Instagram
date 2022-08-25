@@ -3,7 +3,6 @@ import { ReactElement, useContext, useEffect, useState } from 'react'
 import { NotificationsDropdown } from '../NotificationsDropdown'
 import { ProfileDropdown } from '../ProfileDropdown'
 import Link from 'next/link'
-import Image from 'next/image'
 
 import * as Styled from './styles'
 import { AuthContext } from '../../contexts/AuthContext'
@@ -257,14 +256,14 @@ export function NavBar({ isCreatePostOpen, setIsCreatePostOpen }: NavBarProps): 
             </Styled.Notifications>
             <Styled.Profile>
                 {user?.imageProfile ? (
-                    <Image
+                    <img
                         onClick={() => setIsProfileOpen(true)}
                         width="24"
                         height="24"
                         src={`http://localhost:5050/images/profileImages/${user.imageProfile}`}
                     />
                 ) : (
-                    <Image
+                    <img
                         onClick={() => setIsProfileOpen(true)}
                         width="24"
                         height="24"

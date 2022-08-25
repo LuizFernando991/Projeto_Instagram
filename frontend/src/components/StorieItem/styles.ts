@@ -7,13 +7,18 @@ export type Props = {
 export const StorieItem = styled.div<Props>`
     display: inline-block;
     transform: scale(0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 
     & > div {
         border-radius: 6666px;
         border: 2px solid ${({ isVisualizate, theme }) => (isVisualizate ? theme.borderColor.default : '#ea0059')};
         display: flex;
-        padding: 2px;
+        padding: 3px;
+        justify-content: center;
         align-items: center;
     }
 

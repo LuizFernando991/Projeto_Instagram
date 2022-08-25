@@ -34,6 +34,14 @@ export const DropdownContainer = styled.div<Props>`
         &:hover {
             background-color: ${({ theme }) => theme.backgroundColors.grey};
         }
+
+        &:visited {
+            color: #000;
+        }
+
+        P {
+            color: #000;
+        }
     }
 
     li svg {
