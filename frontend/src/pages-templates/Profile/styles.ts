@@ -75,6 +75,10 @@ export const Follows = styled.div`
             margin-right: 25px;
         }
 
+        &:not(:first-child) {
+            cursor: pointer;
+        }
+
         span {
             font-weight: 600;
             margin-right: 3px;

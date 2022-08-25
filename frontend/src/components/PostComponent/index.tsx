@@ -181,7 +181,16 @@ export function PostComponent({ post, isPostOpen, setIsPostOpen }: PostComponent
                                 )}
                                 <span>{post.postedBy.username}</span>
                                 <div className="dot"></div>
-                                {isFollowing ? <span>Following</span> : <button>Follow</button>}
+                                {user?._id !== post.postedBy._id ? (
+                                    isFollowing ? (
+                                        <span>Following</span>
+                                    ) : (
+                                        <button>Follow</button>
+                                    )
+                                ) : (
+                                    ''
+                                )}
+
                                 {user?.username === post.postedBy.username ? (
                                     <Styled.OptionsPostMenu showMenu={showMenu} onClick={() => setShowMenu(!showMenu)}>
                                         <FiMoreHorizontal />

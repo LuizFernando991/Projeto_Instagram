@@ -9,6 +9,7 @@ import { SeparateLine } from '../../components/SeparateLine'
 import { AuthContext } from '../../contexts/AuthContext'
 import { ProfilePostImage } from '../../components/ProfilePostImage'
 import { PostComponent } from '../../components/PostComponent'
+import { FollowersList } from '../../components/FollowersList'
 import { api } from '../../helpers/api'
 import * as Styled from './styles'
 
@@ -23,6 +24,8 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
     const [isPostOpen, setIsPostOpen] = useState<boolean>(false)
     const [userFollow, setUserFollow] = useState<boolean>(false)
     const [selectedPost, setSelectedPost] = useState<PostType | null>(null)
+    const [isFollowingListOpen, setIsFollowingListOpen] = useState<boolean>(false)
+    const [isFollowersListOpen, setIsFollowersListOpen] = useState<boolean>(false)
     const router = useRouter()
 
     useEffect(() => {
@@ -94,10 +97,10 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
                             <p>
                                 <span>{userPosts.allPosts.length}</span>Posts
                             </p>
-                            <p>
+                            <p onClick={() => setIsFollowersListOpen(true)}>
                                 <span>{profileUser?.followers.length}</span>followers
                             </p>
-                            <p>
+                            <p onClick={() => setIsFollowingListOpen(true)}>
                                 <span>{profileUser?.following.length}</span>following
                             </p>
                         </Styled.Follows>
@@ -130,6 +133,26 @@ export function Profile({ profileUser, userPosts }: ProfileProps) {
             </Styled.Main>
             {isPostOpen ? (
                 <PostComponent post={selectedPost} setIsPostOpen={setIsPostOpen} isPostOpen={isPostOpen} />
+            ) : (
+                ''
+            )}
+            {isFollowingListOpen ? (
+                <FollowersList
+                    isOpen={isFollowingListOpen}
+                    setIsOpen={setIsFollowingListOpen}
+                    header="Following"
+                    users={profileUser.following}
+                />
+            ) : (
+                ''
+            )}
+            {isFollowersListOpen ? (
+                <FollowersList
+                    isOpen={isFollowersListOpen}
+                    setIsOpen={setIsFollowersListOpen}
+                    header="Followers"
+                    users={profileUser.followers}
+                />
             ) : (
                 ''
             )}
