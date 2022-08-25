@@ -13,11 +13,12 @@ export type PasswordFormType = {
 }
 
 export function EditPage() {
-    const { user } = useContext(AuthContext)
+    const { user, setUser } = useContext(AuthContext)
     const [passwordForm, setPasswordForm] = useState<PasswordFormType | null>(null)
     const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false)
     const [page, setPage] = useState<number>(0)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const [previewImage, setPreviewImage] = useState<File | null>(null)
     const router = useRouter()
 
     async function handleOnSubmit(event: React.FormEvent) {
@@ -44,6 +45,21 @@ export function EditPage() {
         setPasswordForm({ ...passwordForm, [event.target.name]: event.target.value })
     }
 
+    function handleOnImagePreviewChange(event: React.ChangeEvent<HTMLInputElement>): void {
+        if (!event.target.files[0]) {
+            return
+        }
+        setPreviewImage(event.target.files[0])
+        const form = new FormData()
+        form.append('image', event.target.files[0])
+
+        api.put('/user/imageprofile', form, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then((r) => setUser({ ...user, imageProfile: r.data.newUser.imageProfile }))
+    }
+
     return (
         <Styled.EditPageContainer>
             <Header isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />
@@ -60,7 +76,25 @@ export function EditPage() {
                 </Styled.SideOptions>
                 <Styled.EditInfo>
                     {page === 0 ? (
-                        <div></div>
+                        <Styled.UserInfoContainer>
+                            <Styled.ChangeImageContainer>
+                                {previewImage ? (
+                                    <img width="35" height="35" src={URL.createObjectURL(previewImage)} />
+                                ) : user?.imageProfile ? (
+                                    <img
+                                        width="35"
+                                        height="35"
+                                        src={`http://localhost:5050/images/profileImages/${user?.imageProfile}`}
+                                    />
+                                ) : (
+                                    <img width="35" height="35" src="/assets/images/defaultImageProfile.jpg" />
+                                )}
+
+                                <h2>{user?.username}</h2>
+                                <label htmlFor="image">Change profile image</label>
+                                <input onChange={handleOnImagePreviewChange} id="image" name="image" type="file" />
+                            </Styled.ChangeImageContainer>
+                        </Styled.UserInfoContainer>
                     ) : (
                         <Styled.PasswordContainer>
                             <Styled.ImagePasswordPageContainer>

@@ -133,3 +133,6 @@ export const PasswordForm = styled.form`
         }
     }
 `
+export const UserInfoContainer = styled.div``
+
+export const ChangeImageContainer = styled.div``
