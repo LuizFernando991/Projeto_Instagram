@@ -31,6 +31,13 @@ export const UserInfo = styled.div`
             font-size: 1.1em;
             color: ${({ theme }) => theme.colors.softGrey};
         }
+
+        a {
+            color: ${({ theme }) => theme.colors.black};
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: 700;
+        }
     }
 `
 export const ImagesContainer = styled.div`

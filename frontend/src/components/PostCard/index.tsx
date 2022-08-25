@@ -1,10 +1,11 @@
-import { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useContext, useEffect, useState } from 'react'
 import { PostType } from '../../pages'
-import * as Styled from './styles'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 import { AuthContext } from '../../contexts/AuthContext'
 import { api } from '../../helpers/api'
+import * as Styled from './styles'
 
 export type PostCardProps = {
     post: PostType
@@ -92,7 +93,9 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
                     <Image width="35" height="35" src="/assets/images/defaultImageProfile.jpg" />
                 )}
                 <div className="user-name">
-                    <h3>{post.postedBy.username}</h3>
+                    <Link href={`/${post.postedBy.username}`}>
+                        <a>{post.postedBy.username}</a>
+                    </Link>
                     <p>{post.postedBy.name}</p>
                 </div>
             </Styled.UserInfo>
@@ -199,7 +202,11 @@ export function PostCard({ post, onCommentButtonClick }: PostCardProps) {
                           </p>
                       ))
                     : ''}
-                {post.postComments.length ? <button>See {post.postComments.length} comment</button> : ''}
+                {post.postComments.length ? (
+                    <button onClick={handleOnCommentButtonClick}>See {post.postComments.length} comment</button>
+                ) : (
+                    ''
+                )}
             </Styled.PostInfoContainer>
             <Styled.CommentBar isActived={inputComment ? true : false}>
                 <input
